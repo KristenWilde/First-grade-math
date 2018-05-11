@@ -1,0 +1,15 @@
+#problem-list {
+  max-width: 500px;
+}
+
+.problem {
+  width: 80px;
+  float: left;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.mastered {
+  background-color: pink;
+}
