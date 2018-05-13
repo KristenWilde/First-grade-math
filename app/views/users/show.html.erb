@@ -1,23 +1,8 @@
-<h1>Hello <%= @user.username %></h1>
+<app :username="<%= @username.to_json %>"
+  :problems="<%= @problems.to_json %>"></app>
 
-<p id="info-problems">
-  You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.
-</p>
 
-<p id="info-mastered-problems">
-  When you "master" a problem it will be pink. We'll review these problems too.
-</p>
 
-<ul id="problem-list">
-  <% @user.problems.each do |problem| %>
-    <% if problem.success_times.to_i >= 2 %>
-      <li class="problem mastered">
-    <% else %>
-      <li class="problem">
-    <% end %>
-      <%= problem.minuend %> - <%= problem.subtrahend %></li>
-  <% end %>
-</ul>
 
 
 
