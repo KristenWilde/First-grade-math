@@ -5,18 +5,27 @@
     <p id="info-mastered-problems">When you "master" a problem it will be pink. We'll review these problems too.</p>
     <button>Start</button>
     <ol id="problem-list">
-      <li v-for="problem in problems" class="problem">
-        {{ problem.minuend }} - {{ problem.subtrahend }}
-      </li>
+      <problem-li v-for="problem in problems"
+                  v-bind:minuend="problem.minuend"
+                  v-bind:subtrahend="problem.subtrahend"
+                  v-bind:success_times="problem.success_times">
+       </problem-li>
     </ol>
   </div>
 </template>
 
+
+
 <script>
+import Li from 'li.vue'
+
 export default {
   props: ["username", "problems"],
-}
+  components: {
+    'problem-li': Li,
+  }
 
+}
 
 </script>
 
