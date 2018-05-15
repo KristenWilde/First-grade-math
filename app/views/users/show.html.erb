@@ -1,5 +1,7 @@
-<app :username="<%= @username.to_json %>"
-  :problems="<%= @problems.to_json %>"></app>
+<app data-behavior="vue"
+     v-bind:username="<%= @username.to_json %>"
+     v-bind:problems="<%= @problems.to_json %>">
+</app>
 
 
 

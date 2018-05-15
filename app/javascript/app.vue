@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <h2>Hello {{ username }}!</h2>
-    <p id="info-problems">You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.</p>
-    <p id="info-mastered-problems">When you "master" a problem it will be pink. We'll review these problems too.</p>
-    <button>Start</button>
-    <ol id="problem-list">
-      <problem-li v-for="problem in problems"
-                  v-bind:minuend="problem.minuend"
-                  v-bind:subtrahend="problem.subtrahend"
-                  v-bind:success_times="problem.success_times"
-                  v-bind:problem_id="problem.id"
-                  v-bind:data-working="workingIds">
-       </problem-li>
-    </ol>
+    <div id="app-index">
+      <h2>Hello {{ username }}!</h2>
+      <p id="info-problems">You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.</p>
+      <p id="info-mastered-problems">When you "master" a problem it will be pink.</p>
+      <button>Start</button>
+      <ol id="problem-list">
+        <problem-li v-for="problem in problems"
+                    v-bind:minuend="problem.minuend"
+                    v-bind:subtrahend="problem.subtrahend"
+                    v-bind:success_times="problem.success_times"
+                    v-bind:key="problem.id"
+                    v-bind:problem_id="problem.id"
+                    v-bind:data-working="workingIds">
+         </problem-li>
+      </ol>
+    </div>
+    <div id="practice">
+      <problem-card v-for="problem in problems"
+                    v-bind:minuend="problem.minuend"
+                    v-bind:subtrahend="problem.subtrahend"
+                    v-bind:success_times="problem.success_times"
+                    v-bind:key="problem.id"
+                    v-bind:problem_id="problem.id"
+                    v-bind:data-working="workingIds">
+      </problem-card>
+    </div>
   </div>
 </template>
 
 <script>
-
-
-
 import Li from 'li.vue'
+import Card from 'card.vue'
+
 export default {
+  name: 'app',
   props: ["username", "problems"],
+
   computed: {
     workingIds: function() {
       const ids = [];
@@ -39,8 +53,14 @@ export default {
       return ids;
     },
   },
+  methods: {
+    workingCards: function() {
+      return this.workingIds
+    }
+  },
   components: {
     'problem-li': Li,
+    'problem-card': Card,
   }
 
 }

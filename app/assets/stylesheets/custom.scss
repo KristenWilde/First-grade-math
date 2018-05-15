@@ -1,3 +1,5 @@
+$yellow: #ff6;
+
 html {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 18px;
@@ -58,5 +60,30 @@ header {
 }
 
 .working {
-  background-color: yellow;
+  background-color: $yellow;
+}
+
+/* ----- Practice cards ------ */
+
+#practice {
+  text-align: center;
+  clear: both;
+}
+
+.card-container {
+  font-size: 100px;
+  text-align: right;
+  width: 1.5em;
+  margin: 20px auto;
+}
+
+.subtrahend {
+  text-decoration: underline;
+}
+
+.answer {
+  font: inherit;
+  width: 1.2em;
+  text-align: right;
+  background-color: #eee;
 }
