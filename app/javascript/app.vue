@@ -23,7 +23,8 @@
                     v-bind:success_times="problem.success_times"
                     v-bind:key="problem.id"
                     v-bind:problem_id="problem.id"
-                    v-bind:data-working="workingIds">
+                    v-bind:data-working="workingIds"
+                    v-on:success="incrementSuccess($event)">
       </problem-card>
     </div>
   </div>
@@ -54,8 +55,10 @@ export default {
     },
   },
   methods: {
-    workingCards: function() {
-      return this.workingIds
+    incrementSuccess: function(problemId) {
+      const problem = this.problems.filter((prob) => prob.id == problemId)[0];
+      console.log(problem.id)
+      problem.success_times += 1;
     }
   },
   components: {

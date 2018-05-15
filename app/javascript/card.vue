@@ -15,11 +15,10 @@ export default {
     evaluate: function(event) {
       if (Number(event.target.value) == Number(this.minuend) - Number(this.subtrahend)) {
         console.log('correct answer!');
+        console.log(this.problem_id)
+        this.$emit('success', this.problem_id)
       }
     },
-    success: function() {
-      this.success_times += 1;
-    }
   }
 }
 </script>
