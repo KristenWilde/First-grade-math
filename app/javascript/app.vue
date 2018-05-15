@@ -8,19 +8,37 @@
       <problem-li v-for="problem in problems"
                   v-bind:minuend="problem.minuend"
                   v-bind:subtrahend="problem.subtrahend"
-                  v-bind:success_times="problem.success_times">
+                  v-bind:success_times="problem.success_times"
+                  v-bind:problem_id="problem.id"
+                  v-bind:data-working="workingIds">
        </problem-li>
     </ol>
   </div>
 </template>
 
-
-
 <script>
-import Li from 'li.vue'
 
+
+
+import Li from 'li.vue'
 export default {
   props: ["username", "problems"],
+  computed: {
+    workingIds: function() {
+      const ids = [];
+      let idx = 0;
+      let currentId;
+
+      while (ids.length < 8) {
+        currentId = this.problems[idx].id;
+        if (this.problems[idx].success_times < 2) {
+          ids.push(currentId);
+        }
+        idx += 1;
+      }
+      return ids;
+    },
+  },
   components: {
     'problem-li': Li,
   }

@@ -7,14 +7,17 @@
 
 
 <script>
+
+
+
 export default {
-  props: ["minuend", "subtrahend", "success_times"],
+  props: ["problem_id", "minuend", "subtrahend", "success_times", "data-working"],
   computed: {
     isMastered: function() {
       return this.success_times >= 2;
     },
     isSelected: function() {
-      return false;
+      return this.dataWorking.includes(this.problem_id);
     }
   }
 }
