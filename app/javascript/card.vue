@@ -11,12 +11,17 @@
 export default {
   name: 'card',
   props: ["problem_id", "minuend", "subtrahend", "success_times", "data-working"],
+  data() {
+    return {
+      timer: null,
+    }
+  },
   methods: {
     evaluate: function(event) {
       if (Number(event.target.value) == Number(this.minuend) - Number(this.subtrahend)) {
         console.log('correct answer!');
-        console.log(this.problem_id)
-        this.$emit('success', this.problem_id)
+
+        this.$emit('success', this.problem_id);
       }
     },
   }
