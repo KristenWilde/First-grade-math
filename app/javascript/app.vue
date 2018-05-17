@@ -19,13 +19,9 @@
     </div>
     <div id="practice" v-show="showPractice">
       <problem-card v-for="(problem, idx) in workingProblems"
-                    v-bind:minuend="problem.minuend"
-                    v-bind:subtrahend="problem.subtrahend"
-                    v-bind:success_times="problem.success_times"
-                    v-bind:key="problem.id"
-                    v-bind:problem_id="problem.id"
-                    v-on:success="handleCorrectAnswer($event)"
-                    v-show="showCard(idx)">
+                    v-bind:problem="problem"
+                    v-bind:showing="showCard(idx)"
+                    v-on:success="handleCorrectAnswer($event)">
       </problem-card>
     </div>
   </div>
@@ -80,19 +76,24 @@ export default {
     find(problemId) {
       return this.problems.filter((prob) => prob.id == problemId)[0];
     },
-    handleCorrectAnswer(problemId) {
-      this.incrementSuccess(problemId);
+    handleCorrectAnswer(problem) {
+      this.incrementSuccess(problem);
       if (this.timer) {
         this.nextCard();
       } else {
         this.endPeriod();
       }
     },
-    incrementSuccess(problemId) {
-      this.find(problemId).success_times += 1;
+    incrementSuccess(problem) {
+      problem.success_times += 1;
     },
     nextCard() {
-      this.currentCardIdx = Math.floor(Math.random() * this.workingProblems.length);
+      let newIndex = this.currentCardIdx;
+      while (newIndex == this.currentCardIdx) {
+        newIndex = Math.floor(Math.random() * this.workingProblems.length);
+      }
+      this.currentCardIdx = newIndex;
+      this.workingProblems[this.currentCardIdx].showing = true;
     },
     startPeriod() {
       this.nextCard();
@@ -102,7 +103,6 @@ export default {
                                this.periodLength );
     },
     endPeriod() {
-      console.log('period ended');
       this.workingProblems = this.getWorkingProblems();
       this.showIndex = true;
       this.showPractice = false;
