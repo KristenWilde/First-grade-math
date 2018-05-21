@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import App from 'app.vue';
+
 export default {
   name: 'card',
   props: ["problem", "showing"],
@@ -16,11 +18,13 @@ export default {
       minuend: this.problem.minuend,
       subtrahend: this.problem.subtrahend,
       timer: null,
+      targetTime: 5000,
     }
   },
   updated() {
     if (this.showing) {
       this.$refs.input.focus();
+      this.startTimer();
     }
   },
   methods: {
@@ -29,10 +33,18 @@ export default {
         return true
       }
     },
+    startTimer: function() {
+      this.timer = setTimeout( () => { this.timer = null }, this.targetTime)
+    },
     evaluate: function(event) {
       if (Number(event.target.value) == Number(this.minuend) - Number(this.subtrahend)) {
-        console.log('correct answer!');
-        this.$emit('success', this.problem);
+        if (!!this.timer) {
+          console.log('timer: ' + this.timer);
+          this.problem.success_times += 1;
+          this.$emit('success', this.problem)
+        }
+        console.log('success_times: ' + this.problem.success_times)
+        this.$emit('next');
         event.target.value = '';
       }
     },

@@ -1,16 +1,22 @@
 class UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   def show
     @username = params[:id]
     user = User.find_by username: @username
     @problems = user.problems
-
   end
 
   def create
     user = User.create(username: params[:username], password: params[:password])
+    redirect_to user_path(user)
+  end
 
-    redirect user_path(user)
+  def update
+    user = User.find_by username: params[:id]
+    problems_to_update = params[:problems]
+    update_problems(user, problems_to_update)
+    redirect_to action: 'show', id: user.username, status: '303'
   end
 
 
@@ -20,6 +26,11 @@ class UsersController < ApplicationController
 
     end
 
-
-
+    def update_problems(user, problems_to_update)
+      user_problems = user.problems
+      problems_to_update.each do |prob|
+        stored = user_problems.find_by id: prob['problem_id']
+        stored.update success_times: prob['success_times']
+      end
+    end
 end
