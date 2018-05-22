@@ -43,7 +43,7 @@ export default {
           this.problem.success_times += 1;
           this.$emit('success', this.problem)
         }
-        console.log('success_times: ' + this.problem.success_times)
+        console.log('success_times: ' + this.problem.success_times + ' for ' + this.minuend + ' - ' + this.subtrahend);
         this.$emit('next');
         event.target.value = '';
       }

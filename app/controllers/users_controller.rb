@@ -5,6 +5,7 @@ class UsersController < ApplicationController
     @username = params[:id]
     user = User.find_by username: @username
     @problems = user.problems
+    @seconds = 2
   end
 
   def create
@@ -23,7 +24,6 @@ class UsersController < ApplicationController
   private
 
     def post_params
-
     end
 
     def update_problems(user, problems_to_update)

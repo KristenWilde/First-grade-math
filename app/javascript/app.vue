@@ -4,7 +4,7 @@
       <h2>Hello {{ username }}!</h2>
       <p class="result-msg" v-if="resultMsg">{{resultMsg}}</p>
       <p>You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.</p>
-      <p>When you master a problem it will be green. (To master a problem, answer two times in less than 5 seconds.)</p>
+      <p>When you master a problem it will be green. (Answer in 5 seconds, two times.)</p>
       <button id="start-button" v-on:click="startPeriod">Start</button>
 
       <ol id="problem-list">
@@ -32,25 +32,32 @@
 </template>
 
 <script>
+// Refactor to focus on single group of objects. (Maybe.)
+// Don't allow removal of problems from the set.
+// Combine selected problems and next problems at Start to get Working Problems
 import Card from 'card.vue'
 
 export default {
   name: 'app',
-  props: ["username", "problems"],
+  props: ["username", "problems", "seconds"],
   data() {
     return {
-      workingProblems: this.getWorkingProblems(),
+      selectedProblems: [],
       showIndex: true,
       showPractice: false,
       currentCardIdx: 0,
       timer: null,
-      periodLength: 1000,
       updatedProblems: [],
       resultMsg: '',
+      workingProblems: this.nextProblems(),
+
     }
   },
+  computed: {
+
+  },
   methods: {
-    getWorkingProblems() {
+    nextProblems() {
       const result = [];
       let idx = 0;
       while (result.length < 8) {
@@ -61,20 +68,32 @@ export default {
       }
       return result;
     },
+    getWorkingProblems() {
+      let prob;
+      for (let i = 0; i < this.selectedProblems.length; i++) {
+        prob = this.selectedProblems[i];
+        if (!this.workingProblems.includes(prob)) {
+          this.workingProblems.push(prob);
+        }
+      }
+    },
     toggleProblem(problem) {
-      if (this.workingProblems.includes(problem)){
+      if (this.nextProblems().includes(problem)){
+        return;
+      }
+      if (this.selectedProblems.includes(problem)){
         this.remove(problem);
       }
       else {
-        this.workingProblems.push(problem)
+        this.selectedProblems.push(problem)
       }
     },
     remove(problem) {
-      const idx = this.workingProblems.indexOf(problem);
-      this.workingProblems.splice(idx, 1);
+      const idx = this.selectedProblems.indexOf(problem);
+      this.selectedProblems.splice(idx, 1);
     },
     isSelected(problem) {
-      return this.workingProblems.includes(problem);
+      return this.selectedProblems.includes(problem) || this.workingProblems.includes(problem);
     },
     isMastered(problem) {
       return problem.success_times >= 2;
@@ -98,16 +117,13 @@ export default {
       this.workingProblems[this.currentCardIdx].showing = true;
     },
     startPeriod() {
-      if ( this.invalidSelection() ) {
-        return;
-      }
+      this.getWorkingProblems();
       this.nextCard();
       this.showIndex = false;
       this.showPractice = true;
-      this.timer = setTimeout( () => { this.timer = null }, this.periodLength );
+      this.timer = setTimeout( () => { this.timer = null }, parseInt(this.seconds, 10) * 1000 );
     },
     endPeriod() {
-      this.workingProblems = this.getWorkingProblems();
       this.save();
       this.showIndex = true;
       this.showPractice = false;
@@ -142,6 +158,8 @@ export default {
       request.addEventListener('load', () => {
         console.log(`updated ${problemData.length} problems!`);
         this.updateResultMsg(problemData);
+        this.workingProblems = this.nextProblems();
+        this.updatedProblems = [];
       });
       request.send(json);
     },
@@ -155,7 +173,7 @@ export default {
       if (total === 1) {
         this.resultMsg = "You just mastered 1 more problem!"
       } else if (total > 1) {
-        this.resultMsg = `You just mastered ${numMastered} more problems!!`
+        this.resultMsg = `You just mastered ${total} more problems!!`
       } else {
         this.resultMsg = "";
       }
