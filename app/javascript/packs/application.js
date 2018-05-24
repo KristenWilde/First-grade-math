@@ -7,20 +7,31 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker')
+console.log('Hello World from Kristen')
 
 import TurbolinksAdapter from 'vue-turbolinks';
 import Vue from 'vue/dist/vue.esm'
+import VueRouter from 'vue-router';
 import App from '../app.vue'
 
 Vue.use(TurbolinksAdapter)
+Vue.use(VueRouter)
 
 Vue.component('app', App)
+
+const router = new VueRouter({
+  routes: [
+    { path: '/:seconds', component: App }
+  ]
+});
+
+
 
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
     el: '[data-behavior="vue"]',
     props: ["username", "problems"],
+    router: router,
   })
 
 })

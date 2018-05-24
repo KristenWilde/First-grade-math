@@ -4,7 +4,7 @@
       <h2>Hello {{ username }}!</h2>
       <p class="result-msg" v-if="resultMsg">{{resultMsg}}</p>
       <p>You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.</p>
-      <p>When you master a problem it will be green. (Answer in 5 seconds, two times.)</p>
+      <p>When you master a problem it will be green. (Answer in 5 seconds two times.)</p>
       <button id="start-button" v-on:click="startPeriod">Start</button>
 
       <ol id="problem-list">
@@ -32,25 +32,25 @@
 </template>
 
 <script>
-// Refactor to focus on single group of objects. (Maybe.)
-// Don't allow removal of problems from the set.
-// Combine selected problems and next problems at Start to get Working Problems
+  // Next steps:
+  // Send practice time as a query parameter (seconds)
+  //
 import Card from 'card.vue'
 
 export default {
   name: 'app',
-  props: ["username", "problems", "seconds"],
+  props: ["username", "problems"],
   data() {
     return {
       selectedProblems: [],
       showIndex: true,
       showPractice: false,
-      currentCardIdx: 0,
+      currentCardIdx: null,
       timer: null,
       updatedProblems: [],
       resultMsg: '',
       workingProblems: this.nextProblems(),
-
+      seconds: parseInt(this.$route.params.seconds, 10) || 180,
     }
   },
   computed: {
