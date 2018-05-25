@@ -39,7 +39,7 @@ import Card from 'card.vue'
 
 export default {
   name: 'app',
-  props: ["username", "problems"],
+  props: ["username", "problems",],
   data() {
     return {
       selectedProblems: [],
@@ -50,7 +50,7 @@ export default {
       updatedProblems: [],
       resultMsg: '',
       workingProblems: this.nextProblems(),
-      seconds: parseInt(this.$route.params.seconds, 10) || 180,
+      seconds: parseInt(this.$route.query.seconds, 10) || 180,
     }
   },
   computed: {
@@ -121,7 +121,7 @@ export default {
       this.nextCard();
       this.showIndex = false;
       this.showPractice = true;
-      this.timer = setTimeout( () => { this.timer = null }, parseInt(this.seconds, 10) * 1000 );
+      this.timer = setTimeout( () => { this.timer = null }, this.seconds * 1000 );
     },
     endPeriod() {
       this.save();

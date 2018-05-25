@@ -13,27 +13,38 @@ import TurbolinksAdapter from 'vue-turbolinks';
 import Vue from 'vue/dist/vue.esm';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
+import Layout from '../layout.vue'
 import App from '../app.vue';
 
 Vue.use(TurbolinksAdapter)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
+Vue.component('layout', Layout)
 Vue.component('app', App)
 
 const router = new VueRouter({
   routes: [
-    { path: '/:seconds', component: App }
-  ]
+    { path: '/', component: Layout },
+    { path: '/:username', component: Layout },
+    // { path: '/:username', component: Layout },
+  ],
+  mode: 'history',
 });
 
 
 
 document.addEventListener('turbolinks:load', () => {
-  const app = new Vue({
+  const layout = new Vue({
     el: '[data-behavior="vue"]',
     props: ["username", "problems"],
     router: router,
+
   })
+  // const app = new Vue({
+  //   el: 'app',
+  //   props: ["username", "problems"],
+  //   router: router,
+  // })
 
 })

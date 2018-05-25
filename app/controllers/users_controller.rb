@@ -2,10 +2,10 @@ class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def show
-    @username = params[:id]
+    @username = params[:username]
     user = User.find_by username: @username
-    @problems = user.problems
-    @seconds = 2
+    redirect_to root_url unless user
+    @problems = user.problems if user
   end
 
   def create
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find_by username: params[:id]
+    user = User.find_by username: params[:username]
     problems_to_update = params[:problems]
     update_problems(user, problems_to_update)
     redirect_to action: 'show', id: user.username, status: '303'
