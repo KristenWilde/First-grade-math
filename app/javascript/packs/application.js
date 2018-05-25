@@ -10,12 +10,14 @@
 console.log('Hello World from Kristen')
 
 import TurbolinksAdapter from 'vue-turbolinks';
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue/dist/vue.esm';
 import VueRouter from 'vue-router';
-import App from '../app.vue'
+import VueResource from 'vue-resource';
+import App from '../app.vue';
 
 Vue.use(TurbolinksAdapter)
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
 Vue.component('app', App)
 
