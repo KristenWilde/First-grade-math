@@ -5,7 +5,7 @@
       <p class="result-msg" v-if="resultMsg">{{resultMsg}}</p>
       <p>You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.</p>
       <p>When you master a problem it will be green. (Answer in 5 seconds two times.)</p>
-      <button id="start-button" v-on:click="startPeriod">Start</button>
+      <button v-on:click="startPeriod">Start</button>
 
       <ol id="problem-list">
         <p class="validation-msg">{{invalidMsg()}}</p>

@@ -23,6 +23,8 @@ main, header {
 }
 
 main {
+  background-color: #fefeff;
+  height: 100vh;
   border-left: 1px solid #cecece;
   border-right: 1px solid #cecece;
   padding: 20px 30px;
@@ -81,7 +83,7 @@ header {
   background-color: $working;
 }
 
-#start-button {
+button, a.button {
   display: block;
   width: 100px;
   margin: 1em auto .5em;
@@ -91,6 +93,21 @@ header {
   border-radius: 6px;
   line-height: 2em;
   border: 0;
+  cursor: pointer;
+}
+
+p.or {
+  width: 2em;
+  margin: 0 auto;
+}
+
+#welcome {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 200;
+  h1 {
+    font-size: 2rem;
+  }
 }
 
 p.alert {

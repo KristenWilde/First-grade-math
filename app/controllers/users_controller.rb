@@ -8,9 +8,17 @@ class UsersController < ApplicationController
     @problems = user.problems if user
   end
 
+  def new
+  end
+
+  def validate
+    user = User.find_by username: params[:username]
+    render plain: !user
+  end
+
   def create
     user = User.create(username: params[:username], password: params[:password])
-    redirect_to user_path(user)
+    redirect_to action: 'show', id: user.username, status: '303'
   end
 
   def update
