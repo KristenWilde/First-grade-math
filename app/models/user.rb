@@ -12,6 +12,10 @@ class User < ApplicationRecord
     build_problem_set
   end
 
+  def to_param
+    username
+  end
+
   # private
 
     def build_problem_set

@@ -17,15 +17,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.create(username: params[:username], password: params[:password])
-    redirect_to action: 'show', id: user.username, status: '303'
+    username = params[:username]
+    user = User.create(username: username, password: params[:password])
+    redirect_to "/" + username, status: '302', turbolinks: false
   end
 
   def update
     user = User.find_by username: params[:username]
     problems_to_update = params[:problems]
     update_problems(user, problems_to_update)
-    redirect_to action: 'show', id: user.username, status: '303'
+    redirect_to user_path(user)
   end
 
 

@@ -1,24 +1,20 @@
 <template>
   <div>
     <h1>To sign up:</h1>
-    <ol>
-      <li>Choose a username and password that will be easy for you to remember but hard for other people to guess.</li>
-      <li>Don't use your real name.</li>
-      <li>Write down your username and password or print this page after you fill it in.</li>
-    </ol>
-    <form>
+    <p>Choose a username and password that will be easy for you to remember but hard for other people to guess.</p>
+    <form method="post" action="/users">
       <label for="username">Username</label>
-      <input type="text" id="username" v-model="username"required v-on:blur="validateUniqueUsername" />
+      <input type="text" id="username" name="username" v-model="username"required v-on:blur="validateUniqueUsername" />
       <p>{{ usernameMsg }}</p>
 
-      <label for="password">Password (at least 8 characters)</label>
-      <input type="text" id="password" v-model="password" v-on:blur="validatePasswordLength" required/>
+      <label for="password">Password (at least 6 characters)</label>
+      <input type="text" id="password" name="password"v-model="password" v-on:blur="validatePasswordLength" required/>
       <p>{{ passwordLengthMsg }}</p>
 
       <label for="password_confirmation">Password again</label>
       <input type="text" id="password_confirmation" v-model="password_confirmation" required v-on:blur="validateMatchingPasswords" />
       <p>{{ passwordMatchMsg }}</p>
-      <button v-on:click.prevent="createUser">Sign up</button>
+      <button type="submit">Sign up</button>
     </form>
     <p></p>
   </div>
@@ -42,15 +38,14 @@ export default {
         console.log('invalid submission');
         return
       }
-      this.$http.post("/users", {
-        username: this.username,
-        password: this.password,
-      });
+
+      // .then(() => {
+      //   this.$emit('registered', this.username);
+      // });
     },
     validateUniqueUsername() {
-      if (this.username.trim().length == 0) {
-        this.usernameMsg = "Username is required.";
-        return;
+      if (!this.validateUsernameFormat()) {
+        return false;
       }
       this.$http.get("/validate_username", {
         params: { username: this.username },
@@ -65,8 +60,24 @@ export default {
         console.log(response);
       })
     },
+    validateUsernameFormat() {
+      this.username = this.username.trim();
+      if (this.username.length == 0) {
+        this.usernameMsg = "Username can not be blank.";
+        return false;
+      }
+      if (this.username.match(/\W/)) {
+        this.usernameMsg = "Only letters and numbers are allowed.";
+        return false;
+      }
+      if (this.username.length > 50) {
+        this.usernameMsg = "Username is too long."
+        return false;
+      }
+      return true;
+    },
     validatePasswordLength() {
-      if (this.password.length < 8) {
+      if (this.password.length < 6) {
         this.passwordLengthMsg = "Password is too short.";
         console.log("msg: " + this.passwordLengthMsg)
         return false;
