@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   patch '/users/:username', to: 'users#update'
 
   get '/:username', to: 'users#show'
+  resources 'user'
 
   match "*path", to: "pages#main", via: :all
 

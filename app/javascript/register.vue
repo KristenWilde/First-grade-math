@@ -33,16 +33,6 @@ export default {
     }
   },
   methods: {
-    createUser() {
-      if (!this.allFieldsValid()) {
-        console.log('invalid submission');
-        return
-      }
-
-      // .then(() => {
-      //   this.$emit('registered', this.username);
-      // });
-    },
     validateUniqueUsername() {
       if (!this.validateUsernameFormat()) {
         return false;
@@ -79,7 +69,6 @@ export default {
     validatePasswordLength() {
       if (this.password.length < 6) {
         this.passwordLengthMsg = "Password is too short.";
-        console.log("msg: " + this.passwordLengthMsg)
         return false;
       }
       else {
@@ -98,7 +87,7 @@ export default {
       }
     },
     allFieldsValid() {
-      return this.usernameMsg === "That username is ok!" && this.validateMatchingPasswords() && this.validatePasswordLength();
+      return this.usernameMsg === "That username is ok!" && this.validateUsernameFormat() && this.validateMatchingPasswords() && this.validatePasswordLength();
     }
   }
 }

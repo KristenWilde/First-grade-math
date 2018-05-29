@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     user = User.find_by username: params[:username]
     problems_to_update = params[:problems]
     update_problems(user, problems_to_update)
-    redirect_to user_path(user)
+    redirect_to action: 'show', id: user.username, status: '303'
   end
 
 
