@@ -23,13 +23,13 @@ export default {
     }
   },
   methods: {
-    newUserStart(username) {
-      this.$http.post("/users", {
-        username: this.username,
-        password: this.password,
-      }).then(function(response) {
-      })
-    }
+    // newUserStart(username) {
+    //   this.$http.post("/users", {
+    //     username: this.username,
+    //     password: this.password,
+    //   }).then(function(response) {
+    //   })
+    // }
   },
   components: {
     'app': App,

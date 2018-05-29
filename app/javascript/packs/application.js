@@ -40,7 +40,6 @@ document.addEventListener('turbolinks:load', () => {
     el: '[data-behavior="vue"]',
     props: ["username", "problems"],
     router: router,
-
   })
   // const app = new Vue({
   //   el: 'app',

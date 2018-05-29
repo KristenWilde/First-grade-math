@@ -1,10 +1,18 @@
-$working: #ff6;
-$mastered: #42b883;
+$working: #ffff5b;
+$mastered: #6ED4A4;
+$problem-default: #D4ECF7;
 $alert: red;
-$pink: #ca61ce;
+$pink: #E27ADE;
+$bright-blue: #6EDDEB;
+$neutral-blue-green: #4F9EA8;
+$light-background: #fafafa;
 
 html {
   font: normal 18px/1.2 Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: $neutral-blue-green;
 }
 
 a {
@@ -23,7 +31,7 @@ main, header {
 }
 
 main {
-  background-color: #fefeff;
+  background-color: $light-background;
   height: 100vh;
   border-left: 1px solid #cecece;
   border-right: 1px solid #cecece;
@@ -63,16 +71,21 @@ header {
 }
 
 #problem-list {
-  max-width: 540px;
-  margin: 50px auto;
+  display: grid;
+  grid-gap: 2px;
+  grid-auto-columns: 80px;
+  grid-template-columns: repeat(auto-fill, 80px);
+  // grid-auto-flow: row;
+  justify-content: center;
+  width: 100%;
+  // background-color: #000;
 }
 
 .problem {
-  width: 16%;
-  display: inline-block;
-  padding: 6px 8px;
-  border: 1px solid black;
+  // width: 100px;
+  padding: 8px 5px;
   text-align: center;
+  background-color: $problem-default;
 }
 
 .mastered {

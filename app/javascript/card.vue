@@ -24,14 +24,15 @@ export default {
     if (this.showing) {
       this.$refs.input.focus();
       this.startTimer();
+      console.log('card updated to showing.')
     }
   },
   methods: {
-    focusCurrent: function() {
-      if (this.$props.showing) {
-        return true
-      }
-    },
+    // focusCurrent: function() {
+    //   if (this.$props.showing) {
+    //     return true
+    //   }
+    // },
     startTimer: function() {
       this.timer = setTimeout( () => { this.timer = null }, this.targetTime)
     },

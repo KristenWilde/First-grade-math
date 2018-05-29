@@ -20,9 +20,10 @@
       </ol>
     </div>
     <div id="practice" v-show="showPractice">
-      <problem-card v-for="(problem, idx) in workingProblems"
+      <problem-card v-for="(problem) in workingProblems"
+                    :key="problem.id"
+                    v-bind:showing="problem.showing"
                     v-bind:problem="problem"
-                    v-bind:showing="showCard(idx)"
                     v-on:success="updateProblem($event)"
                     v-on:next="handleAnswer($event)">
       </problem-card>
@@ -31,9 +32,7 @@
 </template>
 
 <script>
-  // Next steps:
-  // Send practice time as a query parameter (seconds)
-  //
+
 import Card from 'card.vue'
 
 export default {
@@ -44,7 +43,6 @@ export default {
       selectedProblems: [],
       showIndex: true,
       showPractice: false,
-      currentCardIdx: null,
       timer: null,
       updatedProblems: [],
       resultMsg: '',
@@ -55,11 +53,16 @@ export default {
   computed: {
 
   },
+  created() {
+    this.$props.problems.forEach( problem => {
+      this.$set(problem, 'showing', false);
+    })
+  },
   methods: {
     nextProblems() {
       const result = [];
       let idx = 0;
-      while (result.length < 10) {
+      while (result.length < 3) {
         if (this.problems[idx].success_times < 2) {
           result.push(this.problems[idx]);
         }
@@ -105,26 +108,31 @@ export default {
         if (this.isMastered(problem)) {
           this.remove(problem, this.workingProblems)
         }
-        if (this.workingProblems.length < 2) {
+        if (this.workingProblems.length === 0) {
           this.endPeriod();
         } else {
-          this.nextCard();
+          this.nextCard(problem);
         }
       } else {
         this.endPeriod();
       }
     },
-    nextCard() {
-      let newIndex = this.currentCardIdx;
-      while (newIndex == this.currentCardIdx) {
-        newIndex = Math.floor(Math.random() * this.workingProblems.length);
-      }
-      this.currentCardIdx = newIndex;
-      this.workingProblems[this.currentCardIdx].showing = true;
+    nextCard(oldProblem) {
+      oldProblem.showing = false;
+      let newProblem;
+      let newIdx;
+      do {
+        newIdx = Math.floor(Math.random() * (this.workingProblems.length));
+        newProblem = this.workingProblems[newIdx];
+      } while (newProblem === oldProblem)
+      newProblem.showing = true;
+    },
+    problemShowing(problem) {
+      return problem.showing;
     },
     startPeriod() {
       this.getWorkingProblems();
-      this.nextCard();
+      this.nextCard(this.workingProblems[0]);
       this.showIndex = false;
       this.showPractice = true;
       this.timer = setTimeout( () => { this.timer = null }, this.seconds * 1000 );
