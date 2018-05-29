@@ -37,13 +37,13 @@ export default {
     },
     evaluate: function(event) {
       if (Number(event.target.value) == Number(this.minuend) - Number(this.subtrahend)) {
-        if (!!this.timer) {
+        if (this.timer) {
           console.log('timer: ' + this.timer);
           this.problem.success_times += 1;
           this.$emit('success', this.problem)
         }
         console.log('success_times: ' + this.problem.success_times + ' for ' + this.minuend + ' - ' + this.subtrahend);
-        this.$emit('next');
+        this.$emit('next', this.problem);
         event.target.value = '';
       }
     },

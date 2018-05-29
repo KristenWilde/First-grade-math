@@ -8,7 +8,6 @@
       <button v-on:click="startPeriod">Start</button>
 
       <ol id="problem-list">
-        <p class="validation-msg">{{invalidMsg()}}</p>
         <li v-for="(problem, idx) in problems"
             class="problem"
             v-bind:class="{
@@ -60,7 +59,7 @@ export default {
     nextProblems() {
       const result = [];
       let idx = 0;
-      while (result.length < 8) {
+      while (result.length < 10) {
         if (this.problems[idx].success_times < 2) {
           result.push(this.problems[idx]);
         }
@@ -82,15 +81,15 @@ export default {
         return;
       }
       if (this.selectedProblems.includes(problem)){
-        this.remove(problem);
+        this.remove(problem, this.selectedProblems);
       }
       else {
         this.selectedProblems.push(problem)
       }
     },
-    remove(problem) {
-      const idx = this.selectedProblems.indexOf(problem);
-      this.selectedProblems.splice(idx, 1);
+    remove(problem, problemSet) {
+      const idx = problemSet.indexOf(problem);
+      problemSet.splice(idx, 1);
     },
     isSelected(problem) {
       return this.selectedProblems.includes(problem) || this.workingProblems.includes(problem);
@@ -103,7 +102,14 @@ export default {
     },
     handleAnswer(problem) {
       if (this.timer) {
-        this.nextCard();
+        if (this.isMastered(problem)) {
+          this.remove(problem, this.workingProblems)
+        }
+        if (this.workingProblems.length < 2) {
+          this.endPeriod();
+        } else {
+          this.nextCard();
+        }
       } else {
         this.endPeriod();
       }
@@ -127,12 +133,6 @@ export default {
       this.save();
       this.showIndex = true;
       this.showPractice = false;
-    },
-    invalidMsg() {
-      return this.invalidSelection() ? "You must select 3 problems or more." : " ";
-    },
-    invalidSelection(){
-      return this.workingProblems.length < 3;
     },
     showCard(idx) {
       return idx == this.currentCardIdx;
@@ -171,9 +171,9 @@ export default {
         }
       }
       if (total === 1) {
-        this.resultMsg = "You just mastered 1 more problem!"
+        this.resultMsg = "You just mastered 1 problem!"
       } else if (total > 1) {
-        this.resultMsg = `You just mastered ${total} more problems!!`
+        this.resultMsg = `You just mastered ${total} problems!!`
       } else {
         this.resultMsg = "";
       }
