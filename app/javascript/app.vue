@@ -22,9 +22,8 @@
     <div id="practice" v-show="showPractice">
       <problem-card v-for="(problem) in workingProblems"
                     :key="problem.id"
-                    v-bind:showing="problem.showing"
                     v-bind:problem="problem"
-                    v-on:success="updateProblem($event)"
+                    v-bind:showing="problem.showing"
                     v-on:next="handleAnswer($event)">
       </problem-card>
     </div>
@@ -46,8 +45,9 @@ export default {
       timer: null,
       updatedProblems: [],
       resultMsg: '',
-      workingProblems: this.nextProblems(),
+      workingProblems: [],
       seconds: parseInt(this.$route.query.seconds, 10) || 180,
+      probsPerPeriod: 5,
     }
   },
   computed: {
@@ -57,6 +57,8 @@ export default {
     this.$props.problems.forEach( problem => {
       this.$set(problem, 'showing', false);
     })
+    this.$props.problems = this.$props.problems.sort((prob1, prob2) => prob1.id - prob2.id);
+    this.workingProblems = this.nextProblems();
   },
   methods: {
     nextProblems() {
@@ -104,6 +106,7 @@ export default {
       return this.problems.filter((prob) => prob.id == problemId)[0];
     },
     handleAnswer(problem) {
+      problem.showing = false;
       if (this.timer) {
         if (this.isMastered(problem)) {
           this.remove(problem, this.workingProblems)
@@ -118,7 +121,6 @@ export default {
       }
     },
     nextCard(oldProblem) {
-      oldProblem.showing = false;
       let newProblem;
       let newIdx;
       do {
@@ -126,9 +128,6 @@ export default {
         newProblem = this.workingProblems[newIdx];
       } while (newProblem === oldProblem)
       newProblem.showing = true;
-    },
-    problemShowing(problem) {
-      return problem.showing;
     },
     startPeriod() {
       this.getWorkingProblems();
@@ -145,14 +144,14 @@ export default {
     showCard(idx) {
       return idx == this.currentCardIdx;
     },
-    updateProblem(problem) {
-      if (!this.updatedProblems.includes(problem)) {
-        this.updatedProblems.push(problem);
-      }
-    },
+    // updateProblem(problem) {
+    //   if (!this.updatedProblems.includes(problem)) {
+    //     this.updatedProblems.push(problem);
+    //   }
+    // },
     save() {
       const request = new XMLHttpRequest;
-      const problemData = this.updatedProblems.map( (problem) => {
+      const problemData = this.workingProblems.map( (problem) => {
         return {
           'problem_id': problem.id,
           'success_times': problem.success_times,
@@ -167,7 +166,7 @@ export default {
         console.log(`updated ${problemData.length} problems!`);
         this.updateResultMsg(problemData);
         this.workingProblems = this.nextProblems();
-        this.updatedProblems = [];
+        // this.updatedProblems = [];
       });
       request.send(json);
     },

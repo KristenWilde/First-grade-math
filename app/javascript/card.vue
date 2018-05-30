@@ -20,11 +20,14 @@ export default {
       targetTime: 5000,
     }
   },
-  updated() {
+  beforeUpdate() {
     if (this.showing) {
-      this.$refs.input.focus();
       this.startTimer();
-      console.log('card updated to showing.')
+    }
+  },
+  updated() {
+     if (this.showing) {
+      this.$refs.input.focus();
     }
   },
   methods: {
@@ -37,11 +40,11 @@ export default {
       this.timer = setTimeout( () => { this.timer = null }, this.targetTime)
     },
     evaluate: function(event) {
-      if (Number(event.target.value) == Number(this.minuend) - Number(this.subtrahend)) {
+      if (Number(event.target.value) === Number(this.minuend) - Number(this.subtrahend)) {
         if (this.timer) {
           console.log('timer: ' + this.timer);
           this.problem.success_times += 1;
-          this.$emit('success', this.problem)
+          // this.$emit('success', this.problem)
         }
         console.log('success_times: ' + this.problem.success_times + ' for ' + this.minuend + ' - ' + this.subtrahend);
         this.$emit('next', this.problem);
