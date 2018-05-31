@@ -13,38 +13,40 @@ import TurbolinksAdapter from 'vue-turbolinks';
 import Vue from 'vue/dist/vue.esm';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
-import Layout from '../layout.vue'
+
+import Welcome from '../welcome.vue';
+import Register from '../register.vue';
+import Login from '../login.vue';
 import App from '../app.vue';
 
 Vue.use(TurbolinksAdapter)
 Vue.use(VueRouter)
 Vue.use(VueResource)
 
-Vue.component('layout', Layout)
+Vue.component('welcome', Welcome)
 Vue.component('app', App)
+Vue.component('register', Register)
+Vue.component('login'), Login
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: Layout },
-    { path: '/:username', component: Layout },
-    { path: '/user/new', component: Layout },
-    // { path: '/user/guest', component: Layout },
-  ],
+    { path: '/:username', component: App      },
+    { path: '/',          component: Welcome  },
+    { path: '/user/new',  component: Register } ],
   mode: 'history',
 });
 
-
-
 document.addEventListener('turbolinks:load', () => {
-  const layout = new Vue({
+  const root = new Vue({
     el: '[data-behavior="vue"]',
     props: ["username", "problems"],
     router: router,
+    components: {
+      'welcome': Welcome,
+      'register': Register,
+      'login': Login,
+      'app': App,
+    },
   })
-  // const app = new Vue({
-  //   el: 'app',
-  //   props: ["username", "problems"],
-  //   router: router,
-  // })
 
 })

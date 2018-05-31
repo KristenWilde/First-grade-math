@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <main id="app">
     <div id="app-index" v-show="showIndex">
       <h2>Hello {{ username }}!</h2>
       <p class="result-msg" v-if="resultMsg">{{resultMsg}}</p>
@@ -22,12 +22,13 @@
     <div id="practice" v-show="showPractice">
       <problem-card v-for="(problem) in workingProblems"
                     :key="problem.id"
+                    v-if="!isMastered(problem)"
                     v-bind:problem="problem"
                     v-bind:showing="problem.showing"
                     v-on:next="handleAnswer($event)">
       </problem-card>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -43,7 +44,7 @@ export default {
       showIndex: true,
       showPractice: false,
       timer: null,
-      updatedProblems: [],
+      justMasteredProblems: [],
       resultMsg: '',
       workingProblems: [],
       seconds: parseInt(this.$route.query.seconds, 10) || 180,
@@ -109,7 +110,8 @@ export default {
       problem.showing = false;
       if (this.timer) {
         if (this.isMastered(problem)) {
-          this.remove(problem, this.workingProblems)
+          this.remove(problem, this.workingProblems);
+          this.justMasteredProblems.push(problem);
         }
         if (this.workingProblems.length === 0) {
           this.endPeriod();
@@ -144,14 +146,15 @@ export default {
     showCard(idx) {
       return idx == this.currentCardIdx;
     },
-    // updateProblem(problem) {
-    //   if (!this.updatedProblems.includes(problem)) {
-    //     this.updatedProblems.push(problem);
-    //   }
-    // },
+    updateProblem(problem) {
+      if (!this.updatedProblems.includes(problem)) {
+        this.updatedProblems.push(problem);
+      }
+    },
     save() {
       const request = new XMLHttpRequest;
-      const problemData = this.workingProblems.map( (problem) => {
+      const problemsToUpdate = this.workingProblems.concat(this.justMasteredProblems)
+      const problemData = problemsToUpdate.map( (problem) => {
         return {
           'problem_id': problem.id,
           'success_times': problem.success_times,
@@ -164,19 +167,13 @@ export default {
       request.setRequestHeader('Content-Type', 'application/json');
       request.addEventListener('load', () => {
         console.log(`updated ${problemData.length} problems!`);
-        this.updateResultMsg(problemData);
+        this.updateResultMsg(this.justMasteredProblems.length);
         this.workingProblems = this.nextProblems();
-        // this.updatedProblems = [];
+        this.justMasteredProblems = [];
       });
       request.send(json);
     },
-    updateResultMsg(problemData) {
-      let total = 0;
-      for (let i = 0; i < problemData.length; i++) {
-        if (problemData[i]['success_times'] >= 2) {
-          total += 1;
-        }
-      }
+    updateResultMsg(total) {
       if (total === 1) {
         this.resultMsg = "You just mastered 1 problem!"
       } else if (total > 1) {
@@ -184,7 +181,6 @@ export default {
       } else {
         this.resultMsg = "";
       }
-
     },
   },
   components: {

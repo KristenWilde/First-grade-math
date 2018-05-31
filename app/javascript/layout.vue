@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <main>
       <welcome v-if="!username"></welcome>
       <register v-if="!username" v-on:registered="newUserStart($event)"></register>
@@ -23,19 +22,8 @@ export default {
     }
   },
   methods: {
-    // newUserStart(username) {
-    //   this.$http.post("/users", {
-    //     username: this.username,
-    //     password: this.password,
-    //   }).then(function(response) {
-    //   })
-    // }
+
   },
-  components: {
-    'app': App,
-    'welcome': Welcome,
-    'register': Register,
-    'login': Login,
-  },
+
 }
 </script>

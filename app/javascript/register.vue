@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main id="register">
     <h1>To sign up:</h1>
     <p>Choose a username and password that will be easy for you to remember but hard for other people to guess.</p>
     <form method="post" action="/users">
@@ -8,7 +8,7 @@
       <p>{{ usernameMsg }}</p>
 
       <label for="password">Password (at least 6 characters)</label>
-      <input type="text" id="password" name="password"v-model="password" v-on:blur="validatePasswordLength" required/>
+      <input type="text" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength" required/>
       <p>{{ passwordLengthMsg }}</p>
 
       <label for="password_confirmation">Password again</label>
@@ -16,8 +16,7 @@
       <p>{{ passwordMatchMsg }}</p>
       <button type="submit">Sign up</button>
     </form>
-    <p></p>
-  </div>
+  </main>
 </template>
 
 <script>

@@ -10,10 +10,6 @@
   </head>
 
   <body>
-    <layout data-behavior="vue"
-            v-bind:username="<%= @username.to_json %>"
-            v-bind:problems="<%= @problems.to_json %>">
-      <%= yield %>
-    </layout>
+    <%= yield %>
   </body>
 </html>

@@ -25,18 +25,16 @@ p, h1, h2, h3, ol, button {
 }
 
 main, header {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
-  position: relative;
 }
 
 main {
   background-color: $light-background;
-  height: 100vh;
+  height: 100%;
   border-left: 1px solid #cecece;
   border-right: 1px solid #cecece;
   padding: 20px 30px;
-  overflow: auto;
 }
 
 header {
