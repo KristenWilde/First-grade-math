@@ -26,13 +26,14 @@ Vue.use(VueResource)
 Vue.component('welcome', Welcome)
 Vue.component('app', App)
 Vue.component('register', Register)
-Vue.component('login'), Login
+Vue.component('login', Login)
 
 const router = new VueRouter({
   routes: [
     { path: '/:username', component: App      },
     { path: '/',          component: Welcome  },
-    { path: '/user/new',  component: Register } ],
+    { path: '/user/new',  component: Register },
+    { path: '/login',     component: Login    } ],
   mode: 'history',
 });
 

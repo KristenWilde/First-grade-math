@@ -5,7 +5,7 @@
     <form method="post" action="/users" id="register_new_user" v-on:submit="checkForm" novalidate>
 
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username" v-model="username"required v-on:blur="validateUniqueUsername" />
+      <input type="text" id="username" name="username" v-model="username" v-on:blur="validateUniqueUsername" />
       <p class="alert">{{ usernameMsg }}</p>
 
       <label for="password">Password: (at least 6 characters)</label>

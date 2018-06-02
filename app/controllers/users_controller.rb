@@ -1,24 +1,18 @@
 class UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  before_action :require_session, only: [:show, :edit, :update]
 
   def show
-    @username = params[:username]
-    user = User.find_by username: @username
-    redirect_to root_url unless user
-    @problems = user.problems if user
+    @problems = @user.problems
+    @username = @user.username
   end
 
   def new
   end
 
-  def validate
-    user = User.find_by username: params[:username]
-    render plain: !user
-  end
-
   def create
     username = params[:username]
     user = User.create(username: username, password: params[:password])
+    session[:user_id] = user.id
     redirect_to "/" + username, status: '302', turbolinks: false
   end
 
@@ -29,6 +23,10 @@ class UsersController < ApplicationController
     redirect_to action: 'show', id: user.username, status: '303'
   end
 
+  def available
+    user = User.find_by username: params[:username]
+    render plain: !user
+  end
 
   private
 
@@ -40,6 +38,13 @@ class UsersController < ApplicationController
       problems_to_update.each do |prob|
         stored = user_problems.find_by id: prob['problem_id']
         stored.update success_times: prob['success_times']
+      end
+    end
+
+    def require_session
+      @user = User.find_by username: params[:username]
+      if @user.id != session[:user_id]
+        redirect_to root_path
       end
     end
 end

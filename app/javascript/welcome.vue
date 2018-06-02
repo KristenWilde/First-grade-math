@@ -9,7 +9,7 @@
       <section>
         <a class="button" href="/user/new">Sign up</a>
         <p class="or">or</p>
-        <a class="button" href="#">Log in</a>
+        <a class="button" href="/login">Log in</a>
       </section>
     </div>
   </main>
