@@ -20,9 +20,8 @@
       </ol>
     </div>
     <div id="practice" v-show="showPractice">
-      <problem-card v-for="(problem) in workingProblems"
+      <problem-card v-for="problem in workingProblems"
                     :key="problem.id"
-                    v-if="!isMastered(problem)"
                     v-bind:problem="problem"
                     v-bind:showing="problem.showing"
                     v-on:next="handleAnswer($event)">
@@ -48,7 +47,7 @@ export default {
       resultMsg: '',
       workingProblems: [],
       seconds: parseInt(this.$route.query.seconds, 10) || 180,
-      probsPerPeriod: 5,
+      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 10,
     }
   },
   computed: {
@@ -65,7 +64,7 @@ export default {
     nextProblems() {
       const result = [];
       let idx = 0;
-      while (result.length < 3) {
+      while (result.length < this.probsPerPeriod) {
         if (this.problems[idx].success_times < 2) {
           result.push(this.problems[idx]);
         }
@@ -123,6 +122,10 @@ export default {
       }
     },
     nextCard(oldProblem) {
+      if (this.workingProblems.length === 1) {
+        this.workingProblems[0].showing = true;
+        return;
+      }
       let newProblem;
       let newIdx;
       do {

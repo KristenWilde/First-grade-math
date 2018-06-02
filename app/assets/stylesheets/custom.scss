@@ -5,7 +5,7 @@ $alert: red;
 $pink: #E27ADE;
 $bright-blue: #6EDDEB;
 $neutral-blue-green: #4F9EA8;
-$light-background: #fafafa;
+$light-background: #f0faff;
 
 html {
   font: normal 18px/1.2 Arial, Helvetica, sans-serif;
@@ -26,15 +26,23 @@ p, h1, h2, h3, ol, button {
 
 main, header {
   max-width: 700px;
-  margin: 0 auto;
 }
 
 main {
   background-color: $light-background;
-  height: 100%;
-  border-left: 1px solid #cecece;
-  border-right: 1px solid #cecece;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -350px;
   padding: 20px 30px;
+}
+
+@media screen and (max-width: 700px) {
+  main {
+    left: 0;
+    margin-left: 0;
+  }
 }
 
 header {
@@ -57,6 +65,69 @@ header {
   float: right;
 }
 
+button, a.button {
+  display: block;
+  width: 100px;
+  margin: 2em auto;
+  font-size: inherit;
+  color: #fff;
+  background-color: $pink;
+  border-radius: 6px;
+  line-height: 2em;
+  border: 0;
+  cursor: pointer;
+}
+
+p.alert {
+  color: $alert;
+}
+
+/* --- Welcome page --- */
+
+p.or {
+  width: 2em;
+  margin: 0 auto;
+}
+
+#welcome {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 200;
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+/* ---- Registration form --- */
+
+#register_new_user {
+  label {
+    display: block;
+    padding-top: 25px;
+    padding-bottom: 5px;
+  }
+
+  input {
+    width: 300px;
+    padding: 8px;
+    box-sizing: border-box;
+    font: inherit;
+    display: inline-block;
+  }
+
+  .alert {
+    display: inline-block;
+    padding-left: 15px;
+  }
+
+  .button {
+
+  }
+
+}
+
+/*. --- Show user page ---- */
+
 .result-msg {
   padding: 7px;
   border: 3px dotted $pink;
@@ -73,10 +144,8 @@ header {
   grid-gap: 2px;
   grid-auto-columns: 80px;
   grid-template-columns: repeat(auto-fill, 80px);
-  // grid-auto-flow: row;
   justify-content: center;
   width: 100%;
-  // background-color: #000;
 }
 
 .problem {
@@ -94,36 +163,6 @@ header {
   background-color: $working;
 }
 
-button, a.button {
-  display: block;
-  width: 100px;
-  margin: 1em auto .5em;
-  font-size: inherit;
-  color: #fff;
-  background-color: $pink;
-  border-radius: 6px;
-  line-height: 2em;
-  border: 0;
-  cursor: pointer;
-}
-
-p.or {
-  width: 2em;
-  margin: 0 auto;
-}
-
-#welcome {
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 200;
-  h1 {
-    font-size: 2rem;
-  }
-}
-
-p.alert {
-  color: $alert;
-}
 
 /* ----- Practice cards ------ */
 
@@ -148,4 +187,24 @@ p.alert {
   width: 1.2em;
   text-align: right;
   background-color: #eee;
+}
+
+.hint-frame {
+  display: grid;
+  grid-gap: 3px;
+  grid-template-columns: repeat(5, 30px);
+  grid-template-rows: 30px 40px 30px 30px;
+  justify-content: right;
+  margin-top: 70px;
+}
+
+.manipulative {
+  width: .3em;
+  height: .3em;
+  border-radius: 50%;
+  background-color: $pink;
+}
+
+.clicked {
+  background-color: $neutral-blue-green;
 }

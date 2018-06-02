@@ -2,10 +2,9 @@
   <main id="welcome">
     <div>
       <article>
-        <h1>Welcome to Subtract.Online!</h1>
-        <p>We're here to help <strong>you</strong>
-          get <br><em>really good</em> at subtracting<br>
-          numbers up to 20. </p>
+        <h1>Welcome to Subtract.Online</h1>
+        <p>Get <em>really good</em> at subtracting
+          numbers up to 20! </p>
       </article>
       <section>
         <a class="button" href="/user/new">Sign up</a>

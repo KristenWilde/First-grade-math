@@ -2,18 +2,19 @@
   <main id="register">
     <h1>To sign up:</h1>
     <p>Choose a username and password that will be easy for you to remember but hard for other people to guess.</p>
-    <form method="post" action="/users">
-      <label for="username">Username</label>
+    <form method="post" action="/users" id="register_new_user" v-on:submit="checkForm" novalidate>
+
+      <label for="username">Username:</label>
       <input type="text" id="username" name="username" v-model="username"required v-on:blur="validateUniqueUsername" />
-      <p>{{ usernameMsg }}</p>
+      <p class="alert">{{ usernameMsg }}</p>
 
-      <label for="password">Password (at least 6 characters)</label>
-      <input type="text" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength" required/>
-      <p>{{ passwordLengthMsg }}</p>
+      <label for="password">Password: (at least 6 characters)</label>
+      <input type="text" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength"/>
+      <p class="alert">{{ passwordLengthMsg }}</p>
 
-      <label for="password_confirmation">Password again</label>
-      <input type="text" id="password_confirmation" v-model="password_confirmation" required v-on:blur="validateMatchingPasswords" />
-      <p>{{ passwordMatchMsg }}</p>
+      <label for="password_confirmation">Type password again:</label>
+      <input type="text" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" />
+      <p class="alert">{{ passwordMatchMsg }}</p>
       <button type="submit">Sign up</button>
     </form>
   </main>
@@ -26,9 +27,9 @@ export default {
       username: "",
       password: "",
       password_confirmation: "",
-      passwordLengthMsg: "",
-      passwordMatchMsg: "",
-      usernameMsg: "",
+      passwordLengthMsg: " ",
+      passwordMatchMsg: " ",
+      usernameMsg: " ",
     }
   },
   methods: {
@@ -85,8 +86,15 @@ export default {
         return true;
       }
     },
-    allFieldsValid() {
-      return this.usernameMsg === "That username is ok!" && this.validateUsernameFormat() && this.validateMatchingPasswords() && this.validatePasswordLength();
+    checkForm(e) {
+      const v1 = this.validateUsernameFormat();
+      const v2 = this.validatePasswordLength();
+      const v3 = this.validateMatchingPasswords();
+      const v4 = (this.usernameMsg === "That username is ok!");
+
+      if (!(v1 && v2 && v3 && v4)) {
+        e.preventDefault();
+      }
     }
   }
 }

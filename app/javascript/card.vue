@@ -4,6 +4,9 @@
     <div class="subtrahend">- {{ subtrahend }}</div>
     <input type="text" class="answer" ref="input"
            v-on:keyup="evaluate">
+    <div class="hint-frame">
+      <div class="manipulative" v-for="item in manipulatives"  v-on:click="toggleColor" v-show="timesUp"></div>
+    </div>
   </article>
 </template>
 
@@ -18,10 +21,13 @@ export default {
       subtrahend: this.problem.subtrahend,
       timer: null,
       targetTime: 5000,
+      manipulatives: new Array(this.problem.minuend),
+      timesUp: false,
     }
   },
   beforeUpdate() {
     if (this.showing) {
+      this.timesUp = false;
       this.startTimer();
     }
   },
@@ -31,13 +37,11 @@ export default {
     }
   },
   methods: {
-    // focusCurrent: function() {
-    //   if (this.$props.showing) {
-    //     return true
-    //   }
-    // },
     startTimer: function() {
-      this.timer = setTimeout( () => { this.timer = null }, this.targetTime)
+      this.timer = setTimeout( () => {
+        this.timer = null;
+        this.timesUp = true;
+      }, this.targetTime)
     },
     evaluate: function(event) {
       if (Number(event.target.value) === Number(this.minuend) - Number(this.subtrahend)) {
@@ -51,6 +55,9 @@ export default {
         event.target.value = '';
       }
     },
+    toggleColor(event) {
+      event.target.classList.toggle('clicked');
+    }
   }
 }
 </script>
