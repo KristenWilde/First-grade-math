@@ -44,7 +44,8 @@ class UsersController < ApplicationController
     def require_session
       @user = User.find_by username: params[:username]
       if @user.id != session[:user_id]
-        redirect_to root_path
+        flash[:message] = "Please log in."
+        redirect_to login_path
       end
     end
 end

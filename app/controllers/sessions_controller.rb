@@ -7,18 +7,19 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to "/" + params[:username], turbolinks: false
     else
-      @msg = "There is something wrong with your username or password."
+      flash[:message] = "There is something wrong with your username or password."
       redirect_to login_path
     end
   end
 
   def destroy
     session[:user_id] = nil
-    flash[:notice] = "You've logged out."
+    flash[:message] = "You've logged out."
     redirect_to root_path
   end
 
   def new
+
   end
 
 end
