@@ -1,23 +1,24 @@
 <template>
-  <main id="register">
-    <h1>To sign up:</h1>
+  <div id="register">
     <p>Choose a username and password that will be easy for you to remember but hard for other people to guess.</p>
     <form method="post" action="/users" id="register_new_user" v-on:submit="checkForm" novalidate>
 
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" v-model="username" v-on:blur="validateUniqueUsername" />
-      <p class="alert">{{ usernameMsg }}</p>
+        <label for="username">Username:
+          <span class="alert">{{ usernameMsg }}</span>
+        </label>
+        <input type="text" id="username" name="username" v-model="username" v-on:blur="validateUniqueUsername" v-bind:class="{error: usernameError}"/>
+        <label for="password">Password:
+          <span class="alert">{{ passwordLengthMsg }}</span>
+        </label>
+        <input type="text" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength"/>
+        <label for="password_confirmation">Password again:
+          <span class="alert">{{ passwordMatchMsg }}</span>
+        </label>
+        <input type="text" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" />
 
-      <label for="password">Password: (at least 6 characters)</label>
-      <input type="text" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength"/>
-      <p class="alert">{{ passwordLengthMsg }}</p>
-
-      <label for="password_confirmation">Type password again:</label>
-      <input type="text" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" />
-      <p class="alert">{{ passwordMatchMsg }}</p>
       <button type="submit">Sign up</button>
     </form>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -27,9 +28,12 @@ export default {
       username: "",
       password: "",
       password_confirmation: "",
-      passwordLengthMsg: " ",
-      passwordMatchMsg: " ",
-      usernameMsg: " ",
+      usernameError: false,
+      passwordError: false,
+      passwordConfError: false,
+      passwordLengthMsg: "",
+      passwordMatchMsg: "",
+      usernameMsg: "",
     }
   },
   methods: {
@@ -42,7 +46,7 @@ export default {
       }).then(function(response) {
         console.log(response);
         if (response.bodyText == 'true') {
-          this.usernameMsg = "That username is ok!";
+          this.usernameMsg = "Ok";
         } else {
           this.usernameMsg = "That username is taken. Try another.";
         }
@@ -68,21 +72,21 @@ export default {
     },
     validatePasswordLength() {
       if (this.password.length < 6) {
-        this.passwordLengthMsg = "Password is too short.";
+        this.passwordLengthMsg = "Password must be at least 6 characters.";
         return false;
       }
       else {
-        this.passwordLengthMsg = "";
+        this.passwordLengthMsg = "Ok";
         return true;
       }
     },
     validateMatchingPasswords() {
-      if (this.password !== this.password_confirmation){
-        this.passwordMatchMsg = "Passwords don't match.";
-        return false;
-      }
-      else {
-        this.passwordMatchMsg = "";
+      if (this.passwordLengthMsg === 'Ok'){
+        if (this.password !== this.password_confirmation){
+          this.passwordMatchMsg = "Passwords don't match.";
+          return false;
+        }
+        this.passwordMatchMsg = "Ok";
         return true;
       }
     },
@@ -90,7 +94,7 @@ export default {
       const v1 = this.validateUsernameFormat();
       const v2 = this.validatePasswordLength();
       const v3 = this.validateMatchingPasswords();
-      const v4 = (this.usernameMsg === "That username is ok!");
+      const v4 = (this.usernameMsg === "Ok");
 
       if (!(v1 && v2 && v3 && v4)) {
         e.preventDefault();

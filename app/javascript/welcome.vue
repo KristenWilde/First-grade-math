@@ -1,30 +1,44 @@
 <template>
   <main id="welcome">
-    <div>
+    <header>
       <article>
         <h1>Welcome to Subtract.Online</h1>
         <p>Get <em>really good</em> at subtracting
           numbers up to 20! </p>
       </article>
-      <section>
-        <a class="button" href="/user/new">Sign up</a>
-        <p class="or">or</p>
-        <a class="button" href="/login">Log in</a>
-      </section>
-    </div>
+      <nav>
+        <a @click="state = 'register'" v-bind:class="{ selected: (state === 'register') }">Sign up</a>
+        <a @click="state = 'login'" v-bind:class="{ selected: (state === 'login') }">Log in</a>
+      </nav>
+    </header>
+    <register v-show="state === 'register'"></register>
+    <login v-show="state === 'login'" v-bind:message="message"></login>
   </main>
 </template>
 
 <script>
+import Register from './register.vue';
+import Login from './login.vue';
+
 export default {
   name: 'welcome',
-  props: ["username", "problems"],
+  props: ["username", "problems", "message"],
   data() {
     return {
+      state: 'default'
+    }
+  },
+  created() {
+    if (this.$props.message) {
+      this.state = 'login';
     }
   },
   methods: {
   },
+  components: {
+    'register': Register,
+    'login': Login,
+  }
 }
 
 </script>

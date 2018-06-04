@@ -7,8 +7,8 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to "/" + params[:username], turbolinks: false
     else
-      flash[:message] = "There is something wrong with your username or password."
-      redirect_to login_path
+      flash[:message] = 'There is something wrong with your username or password.'
+      redirect_to root_path
     end
   end
 
