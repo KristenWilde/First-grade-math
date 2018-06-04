@@ -1,24 +1,31 @@
 <template>
   <main id="app">
-    <div id="app-index" v-show="showIndex">
-      <h2>Hello {{ username }}!</h2>
-      <p class="result-msg" v-if="resultMsg">{{resultMsg}}</p>
-      <p>You’ll be working on the yellow problems below. For an extra challenge you can click on more problems.</p>
-      <p>When you master a problem it will be green. (Answer in 5 seconds two times.)</p>
-      <button v-on:click="startPeriod">Start</button>
+    <ol id="problem-list" v-show="showIndex">
+      <header>
+        <h1>Hello {{ username }}!</h1>
+        <p v-if="resultMsg">{{resultMsg}}</p>
+        <button v-on:click="startPeriod">Start Practicing</button>
+        <p class="key">
+          <span>
+            <span class="working"></span> Next problems to practice
+          </span>
+          <span>
+            <span class="mastered"></span> Mastered problems
+          </span>
+        </p>
+      </header>
 
-      <ol id="problem-list">
-        <li v-for="(problem, idx) in problems"
-            class="problem"
-            v-bind:class="{
-                mastered: isMastered(problem),
-                working: isSelected(problem),
-              }"
-            v-on:click="toggleProblem(problem)">
-            {{ problem.minuend }} - {{ problem.subtrahend }}
-         </li>
-      </ol>
-    </div>
+      <li v-for="(problem, idx) in problems"
+          class="problem"
+          v-bind:class="{
+              mastered: isMastered(problem),
+              working: isSelected(problem),
+            }"
+          v-on:click="toggleProblem(problem)" v-on:dragover="toggleProblem(problem)">
+          {{ problem.minuend }} - {{ problem.subtrahend }}
+       </li>
+    </ol>
+
     <div id="practice" v-show="showPractice">
       <problem-card v-for="problem in workingProblems"
                     :key="problem.id"

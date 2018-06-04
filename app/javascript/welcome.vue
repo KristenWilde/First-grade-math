@@ -11,8 +11,12 @@
         <a @click="state = 'login'" v-bind:class="{ selected: (state === 'login') }">Log in</a>
       </nav>
     </header>
-    <register v-show="state === 'register'"></register>
-    <login v-show="state === 'login'" v-bind:message="message"></login>
+    <transition name="fade">
+      <register v-show="state === 'register'"></register>
+    </transition>
+    <transition name="fade">
+      <login v-show="state === 'login'" v-bind:message="message"></login>
+    </transition>
   </main>
 </template>
 

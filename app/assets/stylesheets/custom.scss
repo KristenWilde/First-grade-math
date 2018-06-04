@@ -45,7 +45,7 @@ p, h1, h2, h3, ol, button {
   height: 180vh;
 }
 
-main, header {
+main {
   text-align: left;
   max-width: 100vw;
 }
@@ -76,6 +76,18 @@ p.message {
   font-size: 1rem;
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .4s;
+}
+
+.fade-leave-active {
+  transition: opacity .2s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 /* --- Welcome page --- */
 
 #welcome header {
@@ -87,15 +99,17 @@ p.message {
   }
   nav {
     display: flex;
-    border: 1px solid $hot-pink;
-    border-radius: 3px;
-    width: 300px;
+    border: 2px solid $hot-pink;
+    border-radius: 5px;
+    max-width: 350px;
     color: $hot-pink;
     margin: 40px auto 30px;
     a {
-      width: 150px;
+      width: 50%;
       line-height: 2;
-      border: 1px solid $hot-pink;
+    }
+    a:first-of-type {
+      border-right: 2px solid $hot-pink;
     }
     a.selected {
       background-color: $pink;
@@ -108,13 +122,11 @@ p.message {
 /* ---- Registration form --- */
 
 #register, #login {
-  max-width: 400px;
+  max-width: 350px;
   margin: 0 auto;
 }
 
 #register > form, #login > form {
-  max-width: 330px;
-  margin: 0 auto;
   label {
     margin-top: 20px;
     padding-bottom: 5px;
@@ -140,28 +152,36 @@ p.message {
 
 /*. --- Show user page ---- */
 
-.result-msg {
-  padding: 7px;
-  border: 3px dotted $pink;
-}
-
-.validation-msg {
-  position: fixed;
-  top: 15rem;
-  color: $alert;
-}
 
 #problem-list {
   display: grid;
-  grid-gap: 2px;
-  grid-auto-columns: 80px;
+  grid-gap: 3px;
+  // grid-auto-columns: 80px;
   grid-template-columns: repeat(auto-fill, 80px);
   justify-content: center;
   width: 100%;
+  header {
+    grid-column: 1 / -1;
+    button {
+      width: 155px;
+    }
+  }
+}
+
+.key {
+  justify-self: start;
+  font-size: .8em;
+  span {
+    display: inline-block;
+    width: 250px;
+  }
+  span > span {
+    width: 1.9em;
+    height: 1em;
+  }
 }
 
 .problem {
-  // width: 100px;
   padding: 8px 5px;
   text-align: center;
   background-color: $problem-default;
