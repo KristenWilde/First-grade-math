@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180511144136) do
+ActiveRecord::Schema.define(version: 20180606154812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "date_records", force: :cascade do |t|
-    t.integer "minutes"
-    t.integer "problems_answered"
-    t.integer "facts_mastered"
+    t.integer "seconds", default: 0
+    t.integer "problems_answered", default: 0
+    t.integer "facts_mastered", default: 0
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

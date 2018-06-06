@@ -1,69 +1,80 @@
 <template>
   <main id="app">
-    <ol id="problem-list" v-show="showIndex">
-      <header>
-        <h1>Hello {{ username }}!</h1>
-        <p v-if="resultMsg">{{resultMsg}}</p>
-        <button v-on:click="startPeriod">Start Practicing</button>
-        <p class="key">
-          <span>
-            <span class="working"></span> Next problems to practice
-          </span>
-          <span>
-            <span class="mastered"></span> Mastered problems
-          </span>
-        </p>
-      </header>
+    <transition name="fade">
+      <ol id="problem-list" v-show="state === 'index'">
+        <header>
+          <a class="log-out" href="/logout">Log out</a>
+          <h1>Hello {{ username }},</h1>
+          <p v-if="resultMsg">{{resultMsg}}</p>
+          <p>{{ message }}</p>
+          <button v-on:click="state = 'practice'">Go</button>
+          <p class="key">
+            <span>
+              <span class="mastered"></span> Mastered problems
+            </span>
+            <span>
+              <span class="working"></span> Next problems to practice
+            </span>
+          </p>
+        </header>
 
-      <li v-for="(problem, idx) in problems"
-          class="problem"
-          v-bind:class="{
-              mastered: isMastered(problem),
-              working: isSelected(problem),
-            }"
-          v-on:click="toggleProblem(problem)" v-on:dragover="toggleProblem(problem)">
-          {{ problem.minuend }} - {{ problem.subtrahend }}
-       </li>
-    </ol>
+        <li v-for="(problem, idx) in problems"
+            class="problem"
+            v-bind:class="{
+                mastered: isMastered(problem),
+                working: isSelected(problem),
+              }"
+            v-on:click="toggleProblem(problem)">
+            {{ problem.minuend }} - {{ problem.subtrahend }}
+         </li>
+      </ol>
+    </transition>
 
-    <div id="practice" v-show="showPractice">
-      <problem-card v-for="problem in workingProblems"
-                    :key="problem.id"
-                    v-bind:problem="problem"
-                    v-bind:showing="problem.showing"
-                    v-on:next="handleAnswer($event)">
-      </problem-card>
-    </div>
+    <practice v-if="state === 'practice'" v-bind:workingProblems="workingProblems" v-bind:maxSeconds="maxSeconds" v-bind:username="username" v-on:finished="endPeriod">
+    </practice>
   </main>
 </template>
 
 <script>
+/*
+The app component:
+  displays a message to the user based on
+    secondsToday and problemsToday
+  determines what problems will be practiced √
+  starts the practice session √
+  submits ajax request to update user when practice session is finished √
 
-import Card from 'card.vue'
+*/
+import Practice from 'practice.vue'
 
 export default {
   name: 'app',
-  props: ["username", "problems",],
+  props: [ "username", "problems", "secondsToday", "problemsToday" ],
   data() {
     return {
+      state: 'index',
       selectedProblems: [],
-      showIndex: true,
-      showPractice: false,
-      timer: null,
-      justMasteredProblems: [],
+      workingProblems: this.nextProblems(),
+      maxSeconds: parseInt(this.$route.query.seconds, 10) || 180,
+      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 3,
+      startTime: null,
+      numMasteredToday: 0,
       resultMsg: '',
-      workingProblems: [],
-      seconds: parseInt(this.$route.query.seconds, 10) || 180,
-      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 10,
+      message: "Let's start subtracting. Ready . . . set . . . "
     }
   },
   computed: {
 
   },
   created() {
-    this.$props.problems.forEach( problem => {
-      this.$set(problem, 'showing', false);
-    })
+    // add the 'showing' property to each problem,
+    // along with a vue getter and setter,
+    // and set it to 'false'
+    // this.$props.problems.forEach( problem => {
+    //   this.$set(problem, 'showing', false);
+    // })
+
+    // sort the problems.
     this.$props.problems = this.$props.problems.sort((prob1, prob2) => prob1.id - prob2.id);
     this.workingProblems = this.nextProblems();
   },
@@ -112,77 +123,18 @@ export default {
     find(problemId) {
       return this.problems.filter((prob) => prob.id == problemId)[0];
     },
-    handleAnswer(problem) {
-      problem.showing = false;
-      if (this.timer) {
-        if (this.isMastered(problem)) {
-          this.remove(problem, this.workingProblems);
-          this.justMasteredProblems.push(problem);
-        }
-        if (this.workingProblems.length === 0) {
-          this.endPeriod();
-        } else {
-          this.nextCard(problem);
-        }
-      } else {
-        this.endPeriod();
-      }
+    endPeriod(periodData) {
+      this.save(periodData);
+      this.state = 'index';
     },
-    nextCard(oldProblem) {
-      if (this.workingProblems.length === 1) {
-        this.workingProblems[0].showing = true;
-        return;
-      }
-      let newProblem;
-      let newIdx;
-      do {
-        newIdx = Math.floor(Math.random() * (this.workingProblems.length));
-        newProblem = this.workingProblems[newIdx];
-      } while (newProblem === oldProblem)
-      newProblem.showing = true;
-    },
-    startPeriod() {
-      this.getWorkingProblems();
-      this.nextCard(this.workingProblems[0]);
-      this.showIndex = false;
-      this.showPractice = true;
-      this.timer = setTimeout( () => { this.timer = null }, this.seconds * 1000 );
-    },
-    endPeriod() {
-      this.save();
-      this.showIndex = true;
-      this.showPractice = false;
-    },
-    showCard(idx) {
-      return idx == this.currentCardIdx;
-    },
-    updateProblem(problem) {
-      if (!this.updatedProblems.includes(problem)) {
-        this.updatedProblems.push(problem);
-      }
-    },
-    save() {
-      const request = new XMLHttpRequest;
-      const problemsToUpdate = this.workingProblems.concat(this.justMasteredProblems)
-      const problemData = problemsToUpdate.map( (problem) => {
-        return {
-          'problem_id': problem.id,
-          'success_times': problem.success_times,
-        }
+    save(periodData) {
+      this.$http.patch("/users/" + this.username, periodData).then(function(response) {
+        console.log(response);
+      }, function(response) {
+        console.log(response);
       })
-      const json = JSON.stringify({
-        'problems': problemData,
-      });
-      request.open('PATCH', '/users/' + this.username)
-      request.setRequestHeader('Content-Type', 'application/json');
-      request.addEventListener('load', () => {
-        console.log(`updated ${problemData.length} problems!`);
-        this.updateResultMsg(this.justMasteredProblems.length);
-        this.workingProblems = this.nextProblems();
-        this.justMasteredProblems = [];
-      });
-      request.send(json);
     },
+    //Not currently working:
     updateResultMsg(total) {
       if (total === 1) {
         this.resultMsg = "You just mastered 1 problem!"
@@ -194,7 +146,7 @@ export default {
     },
   },
   components: {
-    'problem-card': Card,
+    'practice': Practice,
   }
 
 }

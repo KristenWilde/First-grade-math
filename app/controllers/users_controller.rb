@@ -4,6 +4,9 @@ class UsersController < ApplicationController
   def show
     @problems = @user.problems
     @username = @user.username
+
+    @secondsToday = today_record(@user).seconds
+    @problemsToday = today_record(@user).problems_answered
   end
 
   def new
@@ -19,8 +22,12 @@ class UsersController < ApplicationController
   def update
     user = User.find_by username: params[:username]
     problems_to_update = params[:problems]
-    update_problems(user, problems_to_update)
-    redirect_to action: 'show', id: user.username, status: '303'
+    seconds = params[:seconds]
+    num_problems = params[:reps]
+
+    update_problems(problems_to_update)
+    update_date_records(user, seconds, num_problems)
+    redirect_to user_path(user), status: '303', turbolinks: false
   end
 
   def available
@@ -33,12 +40,18 @@ class UsersController < ApplicationController
     def post_params
     end
 
-    def update_problems(user, problems_to_update)
-      user_problems = user.problems
+    def update_problems(problems_to_update)
       problems_to_update.each do |prob|
-        stored = user_problems.find_by id: prob['problem_id']
-        stored.update success_times: prob['success_times']
+        record = Problem.find_by id: prob['id']
+        record.update success_times: prob['success_times']
       end
+    end
+
+    def update_date_records(user, seconds, num_problems)
+      record = today_record(user)
+      new_seconds = record.seconds + seconds.to_i;
+      new_problems = record.problems_answered + num_problems.to_i
+      record.update(seconds: new_seconds, problems_answered: new_problems)
     end
 
     def require_session
@@ -47,5 +60,13 @@ class UsersController < ApplicationController
         flash[:message] = "Please log in."
         redirect_to login_path
       end
+    end
+
+    def today_record(user)
+      record = user.date_records.find_by(created_at: Time.now.midnight..Time.now)
+      unless record
+        record = DateRecord.create(user_id: user.id)
+      end
+      record
     end
 end
