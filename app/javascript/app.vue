@@ -55,7 +55,7 @@ export default {
       selectedProblems: [],
       workingProblems: [],
       maxSeconds: parseInt(this.$route.query.seconds, 10) || 180,
-      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 2,
+      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 10,
       startTime: null,
       numMasteredToday: 0,
       resultMsg: '',
@@ -139,11 +139,11 @@ export default {
       if (this.todaySeconds === 0) {
         return;
       } else if (minutes < 1) {
-        timeStr = this.todayProblems + ' seconds';
+        timeStr = this.todaySeconds + ' seconds';
       } else {
         timeStr = minutes.toFixed(1) + ' minutes'
       }
-      this.resultMsg = `You've practiced for ${timeStr} today and answered ${this.problemsToday} problems!`
+      this.resultMsg = `You've practiced for ${timeStr} today and answered ${this.todayProblems} problems!`
       this.message = "Keep up the great work!"
     },
   },
