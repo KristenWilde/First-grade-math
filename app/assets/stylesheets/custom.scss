@@ -1,21 +1,18 @@
 
 $hot-pink: #B81691;
 $pink: #E063B2;
-$light-pink: #FF8DCA;
 
-$gold: #F7BE15;
+$gold: #F0B82F;
 $orange: #F78715;
 
-$aqua: #24C7C2;
 $dark-aqua: #04918D;
-$light-aqua: #83EDE6;
-$very-light-aqua: #A3E3DC;
+$light-aqua: #A3E3DC;
 $aqua-white: #fbfeff;
+$aqua: #75C2BD;
 
-
-$problem-default: #75C2BD;
-$working: #F0B82F;
-$mastered: $light-pink;
+$problem-default: $dark-aqua;
+$working: $pink;
+$mastered: $hot-pink;
 $button: $dark-aqua;
 $alert: $hot-pink;
 $light-background: #fff;
@@ -25,7 +22,7 @@ html {
 }
 
 body {
-  background: $very-light-aqua;
+  background: $light-aqua;
 }
 
 a {
@@ -189,24 +186,23 @@ p.message {
 .problem {
   padding: 8px 5px;
   text-align: center;
-  background-color: $problem-default;
-  color: #fff;
+  color: $problem-default;
+  border: 1px solid $problem-default;
 }
 
 .mastered {
-  background-color: $mastered;
+  color: $mastered;
+  border: 1px solid $mastered;
 }
 
 .working {
   background-color: $working;
+  color: #fff;
+  border: none;
 }
 
 
 /* ----- Practice cards ------ */
-
-#practice {
-  // text-align: center;
-}
 
 .card-container {
   font-size: 100px;
@@ -223,14 +219,14 @@ p.message {
   font: inherit;
   width: 1.2em;
   text-align: right;
-  background-color: #eee;
+  background-color: $aqua-white;
 }
 
 .hint-frame {
   display: grid;
   grid-gap: 3px;
   grid-template-columns: repeat(5, 30px);
-  grid-template-rows: 30px 40px 30px 30px;
+  grid-template-rows: 30px 50px 30px 30px;
   justify-content: right;
   margin-top: 70px;
 }
@@ -243,5 +239,5 @@ p.message {
 }
 
 .clicked {
-  background-color: $light-pink;
+  background-color: $light-aqua;
 }

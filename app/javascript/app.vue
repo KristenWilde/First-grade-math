@@ -5,15 +5,15 @@
         <header>
           <a class="log-out" href="/logout">Log out</a>
           <h1>Hello {{ username }},</h1>
-          <p v-if="resultMsg">{{resultMsg}}</p>
+          <p>{{ resultMsg }}</p>
           <p>{{ message }}</p>
-          <button v-on:click="state = 'practice'">Go</button>
+          <button v-on:click="start">Go</button>
           <p class="key">
             <span>
-              <span class="mastered"></span> Mastered problems
+              <span class="working"></span> Next problems to practice
             </span>
             <span>
-              <span class="working"></span> Next problems to practice
+              <span class="mastered"></span> Mastered problems
             </span>
           </p>
         </header>
@@ -39,11 +39,10 @@
 /*
 The app component:
   displays a message to the user based on
-    secondsToday and problemsToday
+    secondsToday and problemsToday √
   determines what problems will be practiced √
   starts the practice session √
   submits ajax request to update user when practice session is finished √
-
 */
 import Practice from 'practice.vue'
 
@@ -54,29 +53,21 @@ export default {
     return {
       state: 'index',
       selectedProblems: [],
-      workingProblems: this.nextProblems(),
+      workingProblems: [],
       maxSeconds: parseInt(this.$route.query.seconds, 10) || 180,
-      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 3,
+      probsPerPeriod: parseInt(this.$route.query.problems, 10) || 2,
       startTime: null,
       numMasteredToday: 0,
       resultMsg: '',
-      message: "Let's start subtracting. Ready . . . set . . . "
+      message: "Let's start subtracting. Ready . . . set . . . ",
+      todayProblems: this.problemsToday,
+      todaySeconds: this.secondsToday,
     }
   },
-  computed: {
-
-  },
   created() {
-    // add the 'showing' property to each problem,
-    // along with a vue getter and setter,
-    // and set it to 'false'
-    // this.$props.problems.forEach( problem => {
-    //   this.$set(problem, 'showing', false);
-    // })
-
     // sort the problems.
     this.$props.problems = this.$props.problems.sort((prob1, prob2) => prob1.id - prob2.id);
-    this.workingProblems = this.nextProblems();
+    this.reset();
   },
   methods: {
     nextProblems() {
@@ -123,26 +114,37 @@ export default {
     find(problemId) {
       return this.problems.filter((prob) => prob.id == problemId)[0];
     },
+    start() {
+      this.getWorkingProblems();
+      this.state = 'practice';
+    },
     endPeriod(periodData) {
       this.save(periodData);
-      this.state = 'index';
     },
     save(periodData) {
       this.$http.patch("/users/" + this.username, periodData).then(function(response) {
-        console.log(response);
-      }, function(response) {
-        console.log(response);
+        this.todayProblems = response.body.problems_answered;
+        this.todaySeconds = response.body.seconds;
+        this.reset();
       })
     },
-    //Not currently working:
-    updateResultMsg(total) {
-      if (total === 1) {
-        this.resultMsg = "You just mastered 1 problem!"
-      } else if (total > 1) {
-        this.resultMsg = `You just mastered ${total} problems!!`
+    reset() {
+      this.state = 'index';
+      this.workingProblems = this.nextProblems();
+      this.updateMessages();
+    },
+    updateMessages(total) {
+      const minutes = this.todaySeconds/60;
+      let timeStr;
+      if (this.todaySeconds === 0) {
+        return;
+      } else if (minutes < 1) {
+        timeStr = this.todayProblems + ' seconds';
       } else {
-        this.resultMsg = "";
+        timeStr = minutes.toFixed(1) + ' minutes'
       }
+      this.resultMsg = `You've practiced for ${timeStr} today and answered ${this.problemsToday} problems!`
+      this.message = "Keep up the great work!"
     },
   },
   components: {

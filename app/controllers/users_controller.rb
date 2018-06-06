@@ -20,14 +20,15 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find_by username: params[:username]
+    @user = User.find_by username: params[:username]
     problems_to_update = params[:problems]
     seconds = params[:seconds]
     num_problems = params[:reps]
 
     update_problems(problems_to_update)
-    update_date_records(user, seconds, num_problems)
-    redirect_to user_path(user), status: '303', turbolinks: false
+    update_date_records(@user, seconds, num_problems)
+    render json: today_record(@user)
+    # redirect_to user_path(@user), status: '303', turbolinks: false
   end
 
   def available
