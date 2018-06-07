@@ -59,7 +59,7 @@ export default {
       startTime: null,
       numMasteredToday: 0,
       resultMsg: '',
-      message: "Let's start subtracting. Ready . . . set . . . ",
+      message: "Let's start subtracting. Ready, set . . . ",
       todayProblems: this.problemsToday,
       todaySeconds: this.secondsToday,
     }
