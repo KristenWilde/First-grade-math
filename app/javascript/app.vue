@@ -37,6 +37,8 @@
 
 <script>
 /*
+Consider using Vuex to track state such as updatedProblems, username, and hold methods
+
 The app component:
   displays a message to the user based on
     secondsToday and problemsToday √

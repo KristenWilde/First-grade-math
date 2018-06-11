@@ -13,6 +13,7 @@ import TurbolinksAdapter from 'vue-turbolinks';
 import Vue from 'vue/dist/vue.esm';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
+import Vuex from 'vuex';
 
 import Welcome from '../welcome.vue';
 import Register from '../register.vue';
@@ -22,6 +23,7 @@ import App from '../app.vue';
 Vue.use(TurbolinksAdapter)
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(Vuex)
 
 Vue.component('welcome', Welcome)
 Vue.component('app', App)
@@ -36,6 +38,15 @@ const router = new VueRouter({
     { path: '/login',     component: Login    } ],
   mode: 'history',
 });
+
+const store = new Vuex.Store({
+  state: {
+
+  },
+  mutations: {
+
+  }
+})
 
 document.addEventListener('turbolinks:load', () => {
   const root = new Vue({

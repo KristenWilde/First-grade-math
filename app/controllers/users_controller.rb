@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     username = params[:username]
     user = User.create(username: username, password: params[:password])
     session[:user_id] = user.id
-    redirect_to "/" + username, status: '302', turbolinks: false
+    redirect_to user_path(user)
   end
 
   def update
@@ -28,7 +28,6 @@ class UsersController < ApplicationController
     update_problems(problems_to_update)
     update_date_records(@user, seconds, num_problems)
     render json: today_record(@user)
-    # redirect_to user_path(@user), status: '303', turbolinks: false
   end
 
   def available
