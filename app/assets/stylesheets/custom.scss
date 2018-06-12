@@ -295,7 +295,7 @@ p.message {
   }
 }
 
-@media screen and (max-width: 660px) {
+@media screen and (max-height: 415px), screen and (max-width: 660px) {
   #wrapper {
     padding: 10px 20px;
   }
