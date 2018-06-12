@@ -1,13 +1,13 @@
 <template>
   <main id="app">
     <transition name="fade">
-      <ol id="problem-list" v-show="state === 'index'">
+      <div id="index" v-show="state === 'index'">
         <header>
           <a class="log-out" href="/logout">Log out</a>
           <h1>Hello {{ username }},</h1>
           <p>{{ resultMsg }}</p>
           <p>{{ message }}</p>
-          <button v-on:click="start">Go</button>
+          <button class="button" v-on:click="start">Go</button>
           <p class="key">
             <span>
               <span class="working"></span> Next problems to practice
@@ -17,17 +17,18 @@
             </span>
           </p>
         </header>
-
-        <li v-for="(problem, idx) in problems"
-            class="problem"
-            v-bind:class="{
-                mastered: isMastered(problem),
-                working: isSelected(problem),
-              }"
-            v-on:click="toggleProblem(problem)">
-            {{ problem.minuend }} - {{ problem.subtrahend }}
-         </li>
-      </ol>
+        <ol id="problem-list">
+          <li v-for="(problem, idx) in problems"
+              class="problem"
+              v-bind:class="{
+                  mastered: isMastered(problem),
+                  working: isSelected(problem),
+                }"
+              v-on:click="toggleProblem(problem)">
+              {{ problem.minuend }} - {{ problem.subtrahend }}
+           </li>
+        </ol>
+      </div>
     </transition>
 
     <practice v-if="state === 'practice'" v-bind:workingProblems="workingProblems" v-bind:maxSeconds="maxSeconds" v-bind:username="username" v-on:finished="endPeriod">

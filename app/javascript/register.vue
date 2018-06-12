@@ -16,7 +16,7 @@
         </label>
         <input type="text" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" />
 
-      <button type="submit">Sign up</button>
+      <button type="submit" class="button">Sign up</button>
     </form>
   </div>
 </template>

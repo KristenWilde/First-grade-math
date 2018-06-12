@@ -1,17 +1,33 @@
 <template>
   <div id="practice">
-<!--   <transition-group name="fade"> -->
-    <article class="card-container">
-      <div v-for="problem in workingProblems" v-show="problem === currentProb" :key="problem.id">
+    <section class="card-container">
+      <div class="card" v-for="problem in workingProblems" v-show="problem === currentProb" :key="problem.id">
         <div class="minuend">{{ problem.minuend }}</div>
         <div class="subtrahend">- {{ problem.subtrahend }}</div>
       </div>
-  <!-- </transition-group> -->
-      <input type="text" class="answer" v-on:keyup="evaluate" ref="input">
-      <div class="hint-frame" v-if="!timer">
-      <div class="manipulative" v-for="disc in manipulatives()"  v-on:click="toggleColor" v-show="!timer"></div>
+
+      <div class="hint-card card">
+        <div class="hint-frame" v-if="!timer">
+          <div class="manipulative" v-for="disc in manipulatives()"  v-on:click="toggleColor" v-show="!timer"></div>
+        </div>
       </div>
-    </article>
+
+      <div class="card">
+        <input type="text" class="answer" v-on:keyup="evaluate" ref="input">
+      </div>
+    </section>
+      <div class="buttons">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>0</button>
+      </div>
   </div>
 </template>
 

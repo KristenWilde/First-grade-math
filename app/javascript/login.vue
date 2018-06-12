@@ -6,7 +6,7 @@
       <input type="text" id="username" name="username"/>
       <label for="password">Password:</label>
       <input type="text" id="password" name="password"/>
-      <button type="submit">Log in</button>
+      <button type="submit" class="button">Log in</button>
     </form>
   </div>
 </template>

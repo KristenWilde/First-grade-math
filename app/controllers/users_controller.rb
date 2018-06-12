@@ -9,8 +9,8 @@ class UsersController < ApplicationController
     @problemsToday = today_record(@user).problems_answered
   end
 
-  def new
-  end
+  # def new
+  # end
 
   def create
     username = params[:username]
@@ -36,9 +36,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-    def post_params
-    end
 
     def update_problems(problems_to_update)
       problems_to_update.each do |prob|

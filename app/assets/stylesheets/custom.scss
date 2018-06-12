@@ -1,6 +1,7 @@
 
 $hot-pink: #B81691;
 $pink: #E063B2;
+$pale-pink: #EBC7E1;
 
 $gold: #F0B82F;
 $orange: #F78715;
@@ -10,10 +11,10 @@ $light-aqua: #A3E3DC;
 $aqua-white: #fbfeff;
 $aqua: #75C2BD;
 
-$problem-default: $dark-aqua;
+$problem-default: #888;
 $working: $pink;
 $mastered: $hot-pink;
-$button: $dark-aqua;
+$button: $aqua;
 $alert: $hot-pink;
 $light-background: #fff;
 
@@ -40,7 +41,7 @@ h1 {
 }
 
 #wrapper {
-  max-width: 700px;
+  max-width: 674px;
   background-color: $light-background;
   margin: 0 auto;
   min-height: 100vh;
@@ -50,7 +51,7 @@ h1 {
 main {
 }
 
-button, a.button {
+.button {
   display: block;
   width: 100px;
   margin: 2em auto;
@@ -148,16 +149,9 @@ p.message {
 
 /*. --- Show user page ---- */
 
-
-#problem-list {
-  display: grid;
-  grid-gap: 3px;
-  grid-template-columns: repeat(auto-fill, 80px);
-  justify-content: center;
-  width: 100%;
+#index {
   header {
     position: relative;
-    grid-column: 1 / -1;
     a.log-out {
       font-size: .8em;
       text-decoration: underline;
@@ -169,7 +163,7 @@ p.message {
 }
 
 .key {
-  justify-self: start;
+  // justify-self: start;
   font-size: .8em;
   span {
     display: inline-block;
@@ -182,17 +176,29 @@ p.message {
   }
 }
 
+#problem-list {
+  display: grid;
+  grid-gap: 3px;
+  grid-template-columns: repeat(auto-fill, 80px);
+  justify-content: center;
+  width: 100%;
+  background-color: #eee;
+  padding: 3px;
+}
+
 .problem {
   padding: 8px 5px;
   text-align: center;
   color: $problem-default;
-  border: 1px solid $problem-default;
+  // border: 1px solid $problem-default;
   cursor: pointer;
+  background-color: #fff;
 }
 
 .mastered {
   color: $mastered;
-  border: 1px solid $mastered;
+  background-color: $pale-pink;
+  // border: 1px solid $mastered;
 }
 
 .working {
@@ -204,11 +210,21 @@ p.message {
 
 /* ----- Practice cards ------ */
 
+#practice {
+  font-size: 90px;
+  text-align: center;
+  // margin: 20px auto;
+}
+
 .card-container {
-  font-size: 100px;
+  text-align: left;
+}
+
+.card {
+  width: 45%;
+  display: inline-block;
   text-align: right;
-  width: 1.8em;
-  margin: 20px auto;
+  vertical-align: top;
 }
 
 .subtrahend {
@@ -222,13 +238,18 @@ p.message {
   background-color: $aqua-white;
 }
 
+.hint-card {
+  width: 48%;
+  position: relative;
+  top: 2.1em;
+}
+
 .hint-frame {
   display: grid;
   grid-gap: 3px;
-  grid-template-columns: repeat(5, 30px);
-  grid-template-rows: 30px 50px 30px 30px;
-  justify-content: right;
-  margin-top: 70px;
+  grid-template-columns: repeat(5, .3em);
+  grid-template-rows: .3em .5em .3em .3em;
+  justify-content: center;
 }
 
 .manipulative {
@@ -240,4 +261,44 @@ p.message {
 
 .clicked {
   background-color: $light-aqua;
+}
+
+.button-container {
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 6em;
+  margin: .7em auto;
+  button {
+    width: 1.8em;
+    height: 1.8em;
+    margin: 0;
+    font-size: .3em;
+    border: 0;
+    background-color: $aqua;
+    border-radius: 3px;
+    color: #fff;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #wrapper {
+    padding: 10px 20px;
+  }
+  #practice {
+    font-size: 65px;
+  }
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: left;
+    grid-gap: 4px;
+    width: auto;
+    position: relative;
+    left: 45%;
+    margin-left: -1.2em;
+  }
 }
