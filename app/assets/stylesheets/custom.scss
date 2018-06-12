@@ -235,6 +235,14 @@ p.message {
   font: inherit;
   width: 1.2em;
   text-align: right;
+  background-color: #fefefe;
+}
+
+.incorrect {
+  background-color: #fffcfd;
+}
+
+.correct {
   background-color: $aqua-white;
 }
 
@@ -282,16 +290,22 @@ p.message {
     border-radius: 3px;
     color: #fff;
   }
+  button:focus {
+    outline: none;
+  }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 660px) {
   #wrapper {
     padding: 10px 20px;
   }
   #practice {
-    font-size: 65px;
+    font-size: 60px;
   }
-  .buttons {
+}
+
+@media screen and (max-width: 660px) and (orientation: portrait) {
+    .buttons {
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: left;
@@ -302,3 +316,4 @@ p.message {
     margin-left: -1.2em;
   }
 }
+

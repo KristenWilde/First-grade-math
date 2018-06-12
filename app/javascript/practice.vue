@@ -81,6 +81,7 @@ export default {
     },
     clear() {
       this.answer = "";
+      this.$refs.input.classList.remove('correct', 'incorrect');
     },
     changeAnswer(digit) {
       this.answer += digit;
@@ -122,13 +123,21 @@ export default {
     evaluate(e) {
       console.log(this.timer)
       const answer = Number(this.currentProb.minuend) - Number(this.currentProb.subtrahend);
-      if (this.answer != answer && e.target.value != answer) {
+      if (e) {
+        this.answer = e.target.value;
+      }
+      if (this.answer != answer) {
+        this.$refs.input.classList.add('incorrect');
         return;
       }
-      this.reps += 1;
+      this.$refs.input.classList.add('correct');
+      setTimeout( this.respondToCorrectAnswer, 600 );
+    },
+    respondToCorrectAnswer() {
       if (this.timer) {
         this.handleSuccess();
       }
+      this.reps += 1;
       this.clear();
       this.checkPeriod();
     },
