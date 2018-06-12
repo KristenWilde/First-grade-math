@@ -13,21 +13,22 @@
       </div>
 
       <div class="card">
-        <input type="text" class="answer" v-on:keyup="evaluate" ref="input">
+        <input type="text" class="answer" v-on:keyup="evaluate" ref="input" v-bind:value="answer"/>
       </div>
     </section>
-      <div class="buttons">
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>0</button>
-      </div>
+    <div class="buttons">
+      <button v-on:click="changeAnswer('1')">1</button>
+      <button v-on:click="changeAnswer('2')">2</button>
+      <button v-on:click="changeAnswer('3')">3</button>
+      <button v-on:click="changeAnswer('4')">4</button>
+      <button v-on:click="changeAnswer('5')">5</button>
+      <button v-on:click="changeAnswer('6')">6</button>
+      <button v-on:click="changeAnswer('7')">7</button>
+      <button v-on:click="changeAnswer('8')">8</button>
+      <button v-on:click="changeAnswer('9')">9</button>
+      <button v-on:click="changeAnswer('0')">0</button>
+      <button v-on:click="backspace" class="backspace">←</button>
+    </div>
   </div>
 </template>
 
@@ -68,12 +69,23 @@ export default {
       reps: 0,
       targetTime: 5000,
       seconds: 0,
+      answer: "",
     }
   },
   mounted() {
     this.startPeriod()
   },
   methods: {
+    backspace() {
+      this.answer = this.answer.slice(0, -1);
+    },
+    clear() {
+      this.answer = "";
+    },
+    changeAnswer(digit) {
+      this.answer += digit;
+      this.evaluate();
+    },
     startPeriod() {
       this.startTime = Date.now()
       this.getNextProblem(this.workingProblems[0]);
@@ -94,8 +106,6 @@ export default {
       this.startProblem();
     },
     startProblem() {
-      console.log(this.$refs.input);
-      this.$refs.input.focus();
       this.startTimer();
     },
     startTimer: function() {
@@ -109,17 +119,17 @@ export default {
     toggleColor(event) {
       event.target.classList.toggle('clicked');
     },
-    evaluate(event) {
+    evaluate(e) {
       console.log(this.timer)
       const answer = Number(this.currentProb.minuend) - Number(this.currentProb.subtrahend);
-      if (Number(event.target.value) != answer) {
+      if (this.answer != answer && e.target.value != answer) {
         return;
       }
       this.reps += 1;
-      event.target.value = '';
       if (this.timer) {
         this.handleSuccess();
       }
+      this.clear();
       this.checkPeriod();
     },
     handleSuccess() {
