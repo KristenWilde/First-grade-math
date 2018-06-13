@@ -11,7 +11,7 @@ $light-aqua: #A3E3DC;
 $aqua-white: #fbfeff;
 $aqua: #75C2BD;
 
-$problem-default: #888;
+$problem-default: $hot-pink;
 $working: $pink;
 $mastered: $hot-pink;
 $button: $aqua;
@@ -276,15 +276,17 @@ p.message {
 }
 
 .buttons {
-  display: flex;
-  justify-content: space-around;
-  width: 6.5em;
-  margin: .7em auto;
+  display: grid;
+  grid-template-columns: repeat(11, auto);
+  justify-content: center;
+  grid-gap: 3px;
+  margin-top: 60px;
+  font-size: 28px;
   button {
-    width: 1.8em;
-    height: 1.8em;
+    width: 2em;
+    height: 2em;
     margin: 0;
-    font-size: .3em;
+    font-size: inherit;
     border: 0;
     background-color: $aqua;
     border-radius: 3px;
@@ -295,25 +297,36 @@ p.message {
   }
 }
 
-@media screen and (max-height: 415px), screen and (max-width: 660px) {
-  #wrapper {
-    padding: 10px 20px;
-  }
+@media screen and (max-width: 720px) {
+  // #wrapper {
+  //   padding: 10px 20px;
+  // }
   #practice {
     font-size: 60px;
+    .buttons {
+      font-size: 24px;
+    }
   }
 }
 
 @media screen and (max-width: 660px) and (orientation: portrait) {
     .buttons {
-    display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: left;
-    grid-gap: 4px;
-    width: auto;
     position: relative;
     left: 45%;
-    margin-left: -1.2em;
+    margin-left: -72px;
+  }
+}
+
+@media screen and (max-height: 540px) {
+  #practice {
+    font-size: 40px;
+    .buttons {
+      font-size: 20px;
+      margin-top: 40px;
+      margin-left: -48px;
+    }
   }
 }
 
