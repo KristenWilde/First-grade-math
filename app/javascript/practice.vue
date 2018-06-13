@@ -1,6 +1,7 @@
 <template>
   <div id="practice">
     <section class="card-container">
+      <a class="quit" href="#" v-on:click.prevent="stopPeriod">Stop</a>
       <div class="card" v-for="problem in workingProblems" v-show="problem === currentProb" :key="problem.id">
         <div class="minuend">{{ problem.minuend }}</div>
         <div class="subtrahend">- {{ problem.subtrahend }}</div>
@@ -27,8 +28,11 @@
       <button v-on:click="changeAnswer('8')">8</button>
       <button v-on:click="changeAnswer('9')">9</button>
       <button v-on:click="changeAnswer('0')">0</button>
-      <button v-on:click="backspace" class="backspace">←</button>
+      <button v-on:click="backspace" class="backspace">◀</button>
     </div>
+
+    <p style="font-size: 1rem;">Start time: {{startTime}}
+    </p>
   </div>
 </template>
 
@@ -88,7 +92,9 @@ export default {
       this.evaluate();
     },
     startPeriod() {
-      this.startTime = Date.now()
+      this.seconds = 0;
+      this.reps = 0;
+      this.startTime = Date.now();
       this.getNextProblem(this.workingProblems[0]);
     },
     getNextProblem() {
@@ -131,7 +137,7 @@ export default {
         return;
       }
       this.$refs.input.classList.add('correct');
-      setTimeout( this.respondToCorrectAnswer, 600 );
+      setTimeout( this.respondToCorrectAnswer, 400 );
     },
     respondToCorrectAnswer() {
       if (this.timer) {
@@ -159,23 +165,24 @@ export default {
       }
     },
     checkPeriod() {
-      this.getSecondsPracticed();
-      if (this.workingProblems.length === 0 || this.seconds >= this.maxSeconds) {
+      if (this.workingProblems.length === 0 ||
+        this.getSecondsPracticed() >= this.maxSeconds) {
         this.stopPeriod();
       } else {
         this.getNextProblem();
       }
     },
     getSecondsPracticed() {
-      this.seconds = new Date(Date.now() - this.startTime).getSeconds();
+      return new Date(Date.now() - this.startTime).getSeconds();
     },
     stopPeriod() {
       const periodData = {
         username: this.username,
         problems: this.problemsToUpdate,
-        seconds: this.seconds,
+        seconds: this.getSecondsPracticed(),
         reps: this.reps
       }
+      console.log(periodData)
       this.$emit('finished', periodData)
     },
   },

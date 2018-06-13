@@ -1,9 +1,9 @@
 <template>
   <main id="app">
     <transition name="fade">
-      <div id="index" v-show="state === 'index'">
+      <div id="index" v-if="state === 'index'">
         <header>
-          <a class="log-out" href="/logout">Log out</a>
+          <a class="quit" href="/logout">Log out</a>
           <h1>Hello {{ username }},</h1>
           <p>{{ resultMsg }}</p>
           <p>{{ message }}</p>
@@ -31,7 +31,7 @@
       </div>
     </transition>
 
-    <practice v-if="state === 'practice'" v-bind:workingProblems="workingProblems" v-bind:maxSeconds="maxSeconds" v-bind:username="username" v-on:finished="endPeriod">
+    <practice v-show="state === 'practice'" v-bind:workingProblems="workingProblems" v-bind:maxSeconds="maxSeconds" v-bind:username="username" v-on:finished="endPeriod">
     </practice>
   </main>
 </template>
