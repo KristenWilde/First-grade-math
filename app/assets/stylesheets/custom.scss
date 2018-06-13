@@ -163,7 +163,6 @@ p.message {
 }
 
 .key {
-  // justify-self: start;
   font-size: .8em;
   span {
     display: inline-block;
@@ -190,7 +189,6 @@ p.message {
   padding: 8px 5px;
   text-align: center;
   color: $problem-default;
-  // border: 1px solid $problem-default;
   cursor: pointer;
   background-color: #fff;
 }
@@ -198,7 +196,6 @@ p.message {
 .mastered {
   color: $mastered;
   background-color: $pale-pink;
-  // border: 1px solid $mastered;
 }
 
 .working {
@@ -218,11 +215,12 @@ p.message {
 
 .card-container {
   text-align: left;
+  position: relative;
 }
 
 .card {
   width: 45%;
-  display: inline-block;
+  display: block;
   text-align: right;
   vertical-align: top;
 }
@@ -248,21 +246,22 @@ p.message {
 
 .hint-card {
   width: 48%;
-  position: relative;
-  top: 2.1em;
+  position: absolute;
+  bottom: 10%;
+  right: 0;
 }
 
 .hint-frame {
   display: grid;
   grid-gap: 3px;
-  grid-template-columns: repeat(5, .3em);
-  grid-template-rows: .3em .5em .3em .3em;
+  grid-template-columns: repeat(5, 25px);
+  grid-template-rows: 25px 40px 25px 25px;
   justify-content: center;
 }
 
 .manipulative {
-  width: .3em;
-  height: .3em;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   background-color: $pink;
 }
@@ -280,13 +279,13 @@ p.message {
   grid-template-columns: repeat(11, auto);
   justify-content: center;
   grid-gap: 3px;
-  margin-top: 60px;
-  font-size: 28px;
+  margin-top: .6em;
+  font-size: inherit;
   button {
     width: 2em;
     height: 2em;
     margin: 0;
-    font-size: inherit;
+    font-size: .3em;
     border: 0;
     background-color: $aqua;
     border-radius: 3px;
@@ -297,35 +296,27 @@ p.message {
   }
 }
 
-@media screen and (max-width: 720px) {
-  // #wrapper {
-  //   padding: 10px 20px;
-  // }
+@media screen and (max-width: 740px) {
   #practice {
     font-size: 60px;
-    .buttons {
-      font-size: 24px;
-    }
   }
 }
 
-@media screen and (max-width: 660px) and (orientation: portrait) {
+@media screen and (orientation: portrait) {
     .buttons {
     grid-template-columns: repeat(3, auto);
     justify-content: left;
     position: relative;
     left: 45%;
-    margin-left: -72px;
+    margin-left: -1.2em;
   }
 }
 
-@media screen and (max-height: 540px) {
+@media screen and (max-height: 480px) {
   #practice {
     font-size: 40px;
-    .buttons {
-      font-size: 20px;
-      margin-top: 40px;
-      margin-left: -48px;
+    button {
+      font-size: .6em;
     }
   }
 }
