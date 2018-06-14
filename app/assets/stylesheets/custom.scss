@@ -117,7 +117,7 @@ p.message {
 }
 
 
-/* ---- Registration form --- */
+/* ---- Registration form, Login form --- */
 
 #register, #login {
   max-width: 350px;
@@ -130,7 +130,7 @@ p.message {
     padding-bottom: 5px;
     display: block;
   }
-  input {
+  input:not([type=checkbox]) {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
@@ -145,6 +145,11 @@ p.message {
   }
   .alert {
     font-size: .8em;
+  }
+  .hidePassword {
+    font-size: .8em;
+    position: relative;
+    top: -10px;
   }
 }
 

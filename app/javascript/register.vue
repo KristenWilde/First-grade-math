@@ -7,14 +7,18 @@
           <span class="alert">{{ usernameMsg }}</span>
         </label>
         <input type="text" id="username" name="username" v-model="username" v-on:blur="validateUniqueUsername" v-bind:class="{error: usernameError}" autocomplete="off"/>
+
         <label for="password">Password:
           <span class="alert">{{ passwordLengthMsg }}</span>
         </label>
-        <input type="text" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength" autocomplete="off"/>
+        <input v-bind:type="passwordType" id="password" name="password" v-model="password" v-on:blur="validatePasswordLength" autocomplete="off"/>
+
         <label for="password_confirmation">Password again:
           <span class="alert">{{ passwordMatchMsg }}</span>
         </label>
-        <input type="text" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" autocomplete="off"/>
+        <input v-bind:type="passwordType" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" autocomplete="off"/>
+
+        <label class="hidePassword"><input type="checkbox" v-on:click="hidePassword"> Hide my typing</label>
 
       <button type="submit" class="button">Sign up</button>
     </form>
@@ -34,9 +38,13 @@ export default {
       passwordLengthMsg: "",
       passwordMatchMsg: "",
       usernameMsg: "",
+      passwordType: 'text',
     }
   },
   methods: {
+    hidePassword() {
+      this.passwordType = 'password';
+    },
     validateUniqueUsername() {
       if (!this.validateUsernameFormat()) {
         return false;
