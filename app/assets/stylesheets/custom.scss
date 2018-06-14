@@ -24,6 +24,11 @@ html {
 
 body {
   background: $light-aqua;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 a {
@@ -41,15 +46,12 @@ h1 {
 }
 
 #wrapper {
-  max-width: 670px;
-  min-width: 320px;
+  width: 730px;
+  min-height: 100vh;
   background-color: $light-background;
   margin: 0 auto;
-  min-height: 100vh;
   padding: 15px 30px;
-}
-
-main {
+  box-sizing: border-box;
 }
 
 .button {
@@ -225,7 +227,7 @@ p.message {
 }
 
 .card {
-  width: 45%;
+  width: 40%;
   display: block;
   text-align: right;
   vertical-align: top;
@@ -303,26 +305,30 @@ p.message {
 }
 
 @media screen and (max-width: 740px) {
+  #wrapper {
+    width: 100vw;
+  }
   #practice {
     font-size: 70px;
   }
 }
 
 @media screen and (orientation: portrait) {
-    .buttons {
+  .buttons {
     grid-template-columns: repeat(3, auto);
     justify-content: left;
     position: relative;
-    left: 45%;
+    left: 40%;
     margin-left: -1.2em;
   }
 }
 
-@media screen and (max-height: 480px) and (orientation: landscape) {
+@media screen and (max-width: 470px) and (orientation: portrait),
+screen and (max-width: 740px) and (orientation: landscape) {
   #practice {
     font-size: 50px;
     button {
-      font-size: .5em;
+      font-size: .4em;
     }
   }
 }

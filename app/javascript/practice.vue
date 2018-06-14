@@ -30,9 +30,6 @@
       <button v-on:click="changeAnswer('0')">0</button>
       <button v-on:click="backspace" class="backspace">◀</button>
     </div>
-
-    <p style="font-size: 1rem;">Start time: {{startTime}}
-    </p>
   </div>
 </template>
 
