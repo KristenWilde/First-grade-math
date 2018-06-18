@@ -1,21 +1,24 @@
 <template>
   <main id="welcome">
     <header>
-      <article>
-        <h1>Welcome to Subtract.Online</h1>
-        <p>Get <em>really good</em> at subtracting
-          numbers up to 20! </p>
-      </article>
+      <h1>Welcome to Subtract.Online</h1>
+      <p>Get really good at subtracting
+        numbers up to 20! </p>
+      <p class="message">{{ message }}</p>
       <nav>
-        <a @click="state = 'register'" v-bind:class="{ selected: (state === 'register') }">Sign up</a>
-        <a @click="state = 'login'" v-bind:class="{ selected: (state === 'login') }">Log in</a>
+        <a @click="toggleForm('register')" v-bind:class="{ selected: showing('register') }">
+          Sign up
+        </a>
+        <a @click="toggleForm('login')"    v-bind:class="{ selected: showing('login') }">
+         Log in
+       </a>
       </nav>
     </header>
-    <transition name="fade">
-      <register v-show="state === 'register'"></register>
+    <transition name="slideUp">
+      <register v-show="showing('register')"></register>
     </transition>
-    <transition name="fade">
-      <login v-show="state === 'login'" v-bind:message="message"></login>
+    <transition name="slideUp">
+      <login v-show="showing('login')"></login>
     </transition>
   </main>
 </template>
@@ -29,15 +32,20 @@ export default {
   props: ["username", "problems", "message"],
   data() {
     return {
-      state: 'default'
-    }
-  },
-  created() {
-    if (this.$props.message) {
-      this.state = 'login';
+      currentForm: null,
     }
   },
   methods: {
+    toggleForm(componentName) {
+      if (this.currentForm == componentName) {
+        this.currentForm = null;
+      } else {
+        this.currentForm = componentName;
+      }
+    },
+    showing(componentName) {
+      return this.currentForm === componentName;
+    }
   },
   components: {
     'register': Register,

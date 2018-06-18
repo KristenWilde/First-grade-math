@@ -42,7 +42,7 @@ p, h2, h3, button {
 
 h1 {
   font-size: 1.2rem;
-  margin: .7em 0;
+  // margin: .7em 0;
 }
 
 #wrapper {
@@ -50,7 +50,7 @@ h1 {
   min-height: 100vh;
   background-color: $light-background;
   margin: 0 auto;
-  padding: 15px 30px;
+  padding: 30px;
   box-sizing: border-box;
 }
 
@@ -76,7 +76,30 @@ p.message {
   font-size: 1rem;
 }
 
-.fade-enter-active, .fade-leave-active {
+nav {
+  display: flex;
+  border: 2px solid $hot-pink;
+  border-radius: 5px;
+  max-width: 350px;
+  color: $hot-pink;
+  margin: 40px auto 30px;
+  text-align: center;
+  a {
+    width: 50%;
+    line-height: 2;
+  }
+  a:first-of-type {
+    border-right: 2px solid $hot-pink;
+  }
+  a.selected {
+    background-color: $pink;
+    color: #fff;
+  }
+}
+
+/* --- transitions --- */
+
+.fade-enter-active, {
   transition: opacity .4s;
 }
 
@@ -88,34 +111,49 @@ p.message {
   opacity: 0;
 }
 
+.slideUp-enter-active {
+  // , .slideUp-leave-active
+  transition: all .4s linear;
+}
+
+.slideUp-enter {
+  // height: 0px;
+  // .slideUp-leave-to
+  transform: translateY(100%);
+}
+
+.slideUp-enter-to {
+  // .slideUp-leave
+  // max-height: 460px;
+  transform: translateY(0);
+}
+
+.fadeHeight-enter-active,
+.fadeHeight-leave-active {
+  transition: all 1s;
+  max-height: 460px;
+  transition-timing-function: ease-in;
+}
+.fadeHeight-enter,
+.fadeHeight-leave-to
+{
+  max-height: 0px;
+}
+
 /* --- Welcome page --- */
 
 #welcome header {
   text-align: center;
   font-size: 1.2rem;
   font-weight: 200;
+  background-color: $light-background;
   h1 {
     font-size: 2rem;
   }
-  nav {
-    display: flex;
-    border: 2px solid $hot-pink;
-    border-radius: 5px;
-    max-width: 350px;
-    color: $hot-pink;
-    margin: 40px auto 30px;
-    a {
-      width: 50%;
-      line-height: 2;
-    }
-    a:first-of-type {
-      border-right: 2px solid $hot-pink;
-    }
-    a.selected {
-      background-color: $pink;
-      color: #fff;
-    }
+  p {
+    margin-bottom: 30px;
   }
+
 }
 
 
@@ -124,6 +162,8 @@ p.message {
 #register, #login {
   max-width: 350px;
   margin: 0 auto;
+  background-color: $light-background;
+  z-index: 1;
 }
 
 #register > form, #login > form {
@@ -150,8 +190,7 @@ p.message {
   }
   .hidePassword {
     font-size: .8em;
-    position: relative;
-    top: -10px;
+    margin-top: 4px;
   }
 }
 
@@ -183,7 +222,7 @@ p.message {
   }
 }
 
-#problem-list {
+#problem-list ol {
   display: grid;
   grid-gap: 3px;
   grid-template-columns: repeat(auto-fill, 80px);
@@ -211,7 +250,18 @@ p.message {
   color: #fff;
   border: none;
 }
+/* ----- Date Records Table --- */
 
+table {
+  border: 2px solid #ccc;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 2px solid #ccc;
+  padding: 5px;
+}
 
 /* ----- Practice cards ------ */
 

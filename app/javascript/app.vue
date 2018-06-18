@@ -1,13 +1,25 @@
 <template>
   <main id="app">
     <transition name="fade">
-      <div id="index" v-if="state === 'index'">
+      <div id="index" v-if="showing('index')">
         <header>
           <a class="quit" href="/logout">Log out</a>
           <h1>Hello {{ username }},</h1>
           <p>{{ resultMsg }}</p>
           <p>{{ message }}</p>
           <button class="button" v-on:click="start">Go</button>
+
+          <nav>
+            <a @click="toggleGrid('problem-list')" v-bind:class="{ selected: showing('problem-list') }">
+              See Problem List
+            </a>
+            <a @click="toggleGrid('date-records')"    v-bind:class="{ selected: showing('date-records') }">
+             See Daily Records
+           </a>
+         </nav>
+        </header>
+
+        <article id="problem-list" v-show="showing('problem-list')">
           <p class="key">
             <span>
               <span class="working"></span> Next problems to practice
@@ -16,22 +28,23 @@
               <span class="mastered"></span> Mastered problems
             </span>
           </p>
-        </header>
-        <ol id="problem-list">
-          <li v-for="(problem, idx) in problems"
-              class="problem"
-              v-bind:class="{
-                  mastered: isMastered(problem),
-                  working: isSelected(problem),
-                }"
-              v-on:click="toggleProblem(problem)">
-              {{ problem.minuend }} - {{ problem.subtrahend }}
-           </li>
-        </ol>
+          <ol>
+            <li v-for="(problem, idx) in problems"
+                class="problem"
+                v-bind:class="{
+                    mastered: isMastered(problem),
+                    working: isSelected(problem),
+                  }"
+                v-on:click="toggleProblem(problem)">
+                {{ problem.minuend }} - {{ problem.subtrahend }}
+             </li>
+          </ol>
+        </article>
+        <date-records v-if="showing('date-records')" v-bind:username="username"></date-records>
       </div>
     </transition>
 
-    <practice v-show="state === 'practice'" v-bind:workingProblems="workingProblems" v-bind:maxSeconds="maxSeconds" v-bind:username="username" v-on:finished="endPeriod">
+    <practice v-if="showing('practice')" v-bind:workingProblems="workingProblems" v-bind:maxSeconds="maxSeconds" v-bind:username="username" v-on:finished="endPeriod">
     </practice>
   </main>
 </template>
@@ -48,13 +61,15 @@ The app component:
   submits ajax request to update user when practice session is finished √
 */
 import Practice from 'practice.vue'
+import DateRecords from 'date-records.vue'
 
 export default {
   name: 'app',
   props: [ "username", "problems", "secondsToday", "problemsToday" ],
   data() {
     return {
-      state: 'index',
+      currentView: 'index',
+      currentGrid: null,
       selectedProblems: [],
       workingProblems: [],
       maxSeconds: parseInt(this.$route.query.seconds, 10) || 180,
@@ -73,6 +88,16 @@ export default {
     this.reset();
   },
   methods: {
+    showing(componentName) {
+      return this.currentView === componentName || this.currentGrid === componentName;
+    },
+    toggleGrid(componentName) {
+      if (this.currentGrid === componentName) {
+        this.currentGrid = null;
+      } else {
+        this.currentGrid = componentName;
+      }
+    },
     nextProblems() {
       const result = [];
       let idx = 0;
@@ -114,12 +139,12 @@ export default {
     isMastered(problem) {
       return problem.success_times >= 2;
     },
-    find(problemId) {
-      return this.problems.filter((prob) => prob.id == problemId)[0];
-    },
+    // find(problemId) {
+    //   return this.problems.filter((prob) => prob.id == problemId)[0];
+    // },
     start() {
       this.getWorkingProblems();
-      this.state = 'practice';
+      this.currentView = 'practice';
     },
     endPeriod(periodData) {
       this.save(periodData);
@@ -132,7 +157,7 @@ export default {
       })
     },
     reset() {
-      this.state = 'index';
+      this.currentView = 'index';
       this.workingProblems = this.nextProblems();
       this.updateMessages();
     },
@@ -152,6 +177,7 @@ export default {
   },
   components: {
     'practice': Practice,
+    'date-records': DateRecords,
   }
 
 }

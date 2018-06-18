@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <p class="message">{{ message }}</p>
+
     <form action="/login" method="post">
       <label>Username:</label>
       <input type="text" name="username" autocomplete="off"/>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  props: ['message'],
+  // props: ['message'],
   data() {
     return {
       passwordType: 'text',

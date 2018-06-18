@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_session, only: [:show, :edit, :update]
+  before_action :require_session, only: [:show, :edit, :update, :date_records]
 
   def show
     @problems = @user.problems
@@ -8,9 +8,6 @@ class UsersController < ApplicationController
     @secondsToday = today_record(@user).seconds
     @problemsToday = today_record(@user).problems_answered
   end
-
-  # def new
-  # end
 
   def create
     username = params[:username]
@@ -35,6 +32,10 @@ class UsersController < ApplicationController
     render plain: !user
   end
 
+  def date_records
+    render json: @user.date_records
+  end
+
   private
 
     def update_problems(problems_to_update)
@@ -53,7 +54,10 @@ class UsersController < ApplicationController
 
     def require_session
       @user = User.find_by username: params[:username]
-      if @user.id != session[:user_id]
+      if !@user
+        flash[:message] = params[:username] + " is not a registered user."
+        redirect_to root_path
+      elsif @user.id != session[:user_id]
         flash[:message] = "Please log in."
         redirect_to login_path
       end
