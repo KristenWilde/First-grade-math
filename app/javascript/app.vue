@@ -139,9 +139,6 @@ export default {
     isMastered(problem) {
       return problem.success_times >= 2;
     },
-    // find(problemId) {
-    //   return this.problems.filter((prob) => prob.id == problemId)[0];
-    // },
     start() {
       this.getWorkingProblems();
       this.currentView = 'practice';

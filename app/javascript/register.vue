@@ -18,7 +18,7 @@
         </label>
         <input v-bind:type="passwordType" id="password_confirmation" v-model="password_confirmation" v-on:blur="validateMatchingPasswords" autocomplete="off"/>
 
-        <label class="hidePassword"><input type="checkbox" v-on:click="hidePassword"> Hide my typing</label>
+        <label class="hidePassword"><input type="checkbox" v-on:click="toggleShowPassword"> Show my typing</label>
 
       <button type="submit" class="button">Sign up</button>
     </form>
@@ -38,12 +38,16 @@ export default {
       passwordLengthMsg: "",
       passwordMatchMsg: "",
       usernameMsg: "",
-      passwordType: 'text',
+      passwordType: 'password',
     }
   },
   methods: {
-    hidePassword() {
-      this.passwordType = 'password';
+    toggleShowPassword() {
+      if (this.passwordType === 'text') {
+        this.passwordType = 'password';
+      } else {
+        this.passwordType = 'text';
+      }
     },
     validateUniqueUsername() {
       if (!this.validateUsernameFormat()) {

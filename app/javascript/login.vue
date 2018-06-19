@@ -3,12 +3,12 @@
 
     <form action="/login" method="post">
       <label>Username:</label>
-      <input type="text" name="username" autocomplete="off"/>
+      <input type="text" name="username" autocomplete="on"/>
 
       <label>Password:</label>
       <input v-bind:type="passwordType" name="password" autocomplete="current-password"/>
 
-      <label class="hidePassword"><input type="checkbox" v-on:click="hidePassword"> Hide my typing</label>
+      <label class="hidePassword"><input type="checkbox" v-on:click="toggleShowPassword"> Show my typing</label>
 
       <button type="submit" class="button">Log in</button>
     </form>
@@ -17,15 +17,18 @@
 
 <script>
 export default {
-  // props: ['message'],
   data() {
     return {
-      passwordType: 'text',
+      passwordType: 'password',
     }
   },
   methods: {
-    hidePassword() {
-      this.passwordType = 'password';
+    toggleShowPassword() {
+      if (this.passwordType === 'text') {
+        this.passwordType = 'password';
+      } else {
+        this.passwordType = 'text';
+      }
     }
   }
 }

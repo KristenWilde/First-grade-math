@@ -16,7 +16,7 @@ class User < ApplicationRecord
     username
   end
 
-  # private
+  private
 
     def build_problem_set
       (4..20).each do |minuend|

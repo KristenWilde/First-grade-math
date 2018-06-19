@@ -6,10 +6,10 @@ Rails.application.routes.draw do
   get '/login', to: 'pages#main'
   post '/login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
-  patch '/users/:username', to: 'users#update'
+
   get '/:username', to: 'users#show', as: 'user'
+  patch '/users/:username', to: 'users#update'
   get '/:username/date_records', to: 'users#date_records'
 
   get "*path", to: "pages#main", via: :all
-
 end

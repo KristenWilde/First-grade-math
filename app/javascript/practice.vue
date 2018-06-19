@@ -9,7 +9,7 @@
 
       <div class="hint-card card">
         <div class="hint-frame" v-if="!timer">
-          <div class="manipulative" v-for="disc in manipulatives()"  v-on:click="toggleColor" v-show="!timer"></div>
+          <div class="manipulative" v-for="disc in manipulatives()"  v-on:click="toggleColor" v-on:mouseenter="toggleColor" v-show="!timer"></div>
         </div>
       </div>
 
@@ -122,6 +122,9 @@ export default {
     },
     toggleColor(event) {
       event.target.classList.toggle('clicked');
+    },
+    keyInput(event) {
+      console.log(event.key);
     },
     evaluate(e) {
       console.log(this.timer)
