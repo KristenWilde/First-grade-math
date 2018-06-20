@@ -39,12 +39,15 @@ const router = new VueRouter({
   mode: 'history',
 });
 
+// Boilerplate for possible future refactor
 const store = new Vuex.Store({
   state: {
-
   },
   mutations: {
-
+  },
+  getters: {
+  },
+  actions: {
   }
 })
 
