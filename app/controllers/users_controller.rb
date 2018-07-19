@@ -10,14 +10,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    username = params[:username]
-    user = User.create(username: username, password: params[:password])
+    user = User.create(username: params[:username], password: params[:password])
     session[:user_id] = user.id
     redirect_to user_path(user)
   end
 
   def update
-    # @user = User.find_by username: params[:username]
     problems_to_update = params[:problems]
     seconds = params[:seconds]
     num_problems = params[:reps]
@@ -50,17 +48,6 @@ class UsersController < ApplicationController
       new_seconds = record.seconds + seconds.to_i;
       new_problems = record.problems_answered + num_problems.to_i
       record.update(seconds: new_seconds, problems_answered: new_problems)
-    end
-
-    def require_session
-      @user = User.find_by username: params[:username]
-      if !@user
-        flash[:message] = params[:username] + " is not a registered user."
-        redirect_to root_path
-      elsif @user.id != session[:user_id]
-        flash[:message] = "Please log in."
-        redirect_to login_path
-      end
     end
 
     def today_record(user)
