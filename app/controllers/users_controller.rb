@@ -5,8 +5,8 @@ class UsersController < ApplicationController
     @problems = @user.problems
     @username = @user.username
 
-    @secondsToday = DateRecord.today_record(@user).seconds
-    @problemsToday = DateRecord.today_record(@user).problems_answered
+    @secondsToday = PracticeDate.current_practice(@user).seconds
+    @problemsToday = PracticeDate.current_practice(@user).problems_answered
   end
 
   def create
@@ -17,8 +17,8 @@ class UsersController < ApplicationController
 
   def update
     Problem.update_problems(params[:problems])
-    DateRecord.update_date_records(@user, params[:seconds], params[:reps])
-    render json: DateRecord.today_record(@user)
+    PracticeDate.update_practice(@user, params[:seconds], params[:reps])
+    render json: PracticeDate.current_practice(@user)
   end
 
   def available
@@ -27,6 +27,6 @@ class UsersController < ApplicationController
   end
 
   def date_records
-    render json: @user.date_records
+    render json: @user.practice_dates
   end
 end

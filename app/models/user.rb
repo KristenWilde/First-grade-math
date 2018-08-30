@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-  has_many :date_records
+  has_many :practice_dates
   has_many :problems
 
   has_secure_password

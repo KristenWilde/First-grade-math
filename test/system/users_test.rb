@@ -23,4 +23,6 @@ class UsersTest < ApplicationSystemTestCase
     assert_selector '#register', visible: false
     assert_selector '#login', visible: true
   end
+
+
 end

@@ -11,7 +11,4 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_select '#wrapper', 1, 'Does not show wrapper element'
   end
-
-
-
 end
