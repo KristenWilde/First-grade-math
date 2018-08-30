@@ -6,10 +6,10 @@
         numbers up to 20! </p>
       <p class="message">{{ message }}</p>
       <nav>
-        <a @click="toggleForm('register')" v-bind:class="{ selected: showing('register') }">
+        <a id="show-sign-up" href="#" @click.prevent="toggleForm('register')" v-bind:class="{ selected: showing('register') }">
           Sign up
         </a>
-        <a @click="toggleForm('login')"    v-bind:class="{ selected: showing('login') }">
+        <a id="show-log-in" href="#" @click.prevent="toggleForm('login')"    v-bind:class="{ selected: showing('login') }">
          Log in
        </a>
       </nav>

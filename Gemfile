@@ -43,6 +43,9 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver', '~> 3.12.0'
   gem 'pry', '~> 0.10.4'
+  gem 'webdrivers'
+  gem 'poltergeist'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
 
 group :development do
