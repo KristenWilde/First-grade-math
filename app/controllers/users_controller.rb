@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
   def update
     Problem.update_problems(params[:problems])
-    PracticeDate.update_practice(@user, params[:seconds], params[:reps])
+    PracticeDate.add_to_practice(@user, params[:seconds], params[:reps])
     render json: PracticeDate.current_practice(@user)
   end
 

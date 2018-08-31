@@ -9,18 +9,19 @@ class PracticeDateTest < ActiveSupport::TestCase
     @bob = User.create(username: 'Bob', password: 'password')
   end
 
-  test "won't create an invalid practice record" do #fails
+  test "won't create an invalid practice record" do
     invalid = PracticeDate.new(problems_answered: 'word', seconds: 'string', user_id: @bob.id)
+    empty = PracticeDate.new()
     assert_not invalid.save, 'saved an invalid practice record'
+    assert_not empty.save, 'saved an practice record without data'
   end
 
-  test 'will create a valid prace record' do
+  test 'will create a valid practice record' do
     valid = PracticeDate.new(problems_answered: 5, seconds: 30, user_id: @bob.id)
     assert valid.save, 'failed to save a valid practice record'
   end
 
-  test "won't create more than one practice record per day" do #fails
-    record1 = PracticeDate.create
-    assert_not PracticeDate.create, 'saved two records created on same date'
+  test "won't create more than one practice record per day" do
+    flunk 'Validation of one per day has not been implemented'
   end
 end
