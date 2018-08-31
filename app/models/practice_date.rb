@@ -1,5 +1,7 @@
 class PracticeDate < ApplicationRecord
   belongs_to :user, foreign_key: 'user_id'
+  validates :seconds, :problems_answered, numericality: true, presence: true
+  validates :created_at, numericality: true, presence: true, uniqueness: true
 
   def self.update_practice(user, seconds, reps)
     values = {
